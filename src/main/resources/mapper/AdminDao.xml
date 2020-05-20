@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skpl.mailapp.dao.AdminDao">
+
+    <resultMap type="com.skpl.mailapp.entity.Admin" id="AdminMap">
+        <result property="a_no" column="a_no" jdbcType="INTEGER"/>
+        <result property="a_name" column="a_name" jdbcType="VARCHAR"/>
+        <result property="a_password" column="a_password" jdbcType="VARCHAR"/>
+        <result property="a_type" column="a_type" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="AdminMap">
+        select
+          a_no, a_name, a_password, a_type
+        from Mailapp.admin
+        where a_no = #{aNo}
+    </select>
+
+    <!--根据用户名查询-->
+    <select id="queryByName" resultMap="AdminMap">
+        select
+            a_no, a_name, a_password, a_type
+        from Mailapp.admin
+        where a_name = #{aName}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="AdminMap">
+        select
+          a_no, a_name, a_password, a_type
+        from Mailapp.admin
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="AdminMap">
+        select
+          a_no, a_name, a_password, a_type
+        from Mailapp.admin
+        <where>
+            <if test="aNo != null">
+                and a_no = #{aNo}
+            </if>
+            <if test="aName != null and aName != ''">
+                and a_name = #{aName}
+            </if>
+            <if test="aPassword != null and aPassword != ''">
+                and a_password = #{aPassword}
+            </if>
+            <if test="aType != null and aType != ''">
+                and a_type = #{aType}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="aNo" useGeneratedKeys="true">
+        insert into Mailapp.admin(a_no, a_name, a_password, a_type)
+        values (#{aNo}, #{aName}, #{aPassword}, #{aType})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update Mailapp.admin
+        <set>
+            <if test="aName != null and aName != ''">
+                a_name = #{aName},
+            </if>
+            <if test="aPassword != null and aPassword != ''">
+                a_password = #{aPassword},
+            </if>
+            <if test="aType != null and aType != ''">
+                a_type = #{aType},
+            </if>
+        </set>
+        where a_no = #{aNo}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from Mailapp.admin where a_no = #{aNo}
+    </delete>
+
+</mapper>

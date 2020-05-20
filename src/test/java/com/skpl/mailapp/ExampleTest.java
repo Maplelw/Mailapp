@@ -1,4 +1,5 @@
 package com.skpl.mailapp;
+import com.skpl.mailapp.util.Md5Util;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -9,9 +10,9 @@ public class ExampleTest {
 
     @Test
     public void test1() {
-        int result = 6;
-        assertEquals(6,result);
+        System.out.println(Md5Util.md5("123"));
     }
+
 
 
 }

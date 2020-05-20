@@ -1,10 +1,10 @@
 spring:
   datasource:
     username: root
-    password: lw1937553971
-    url: jdbc:mysql://localhost:3306/testdb?useUnicode=true&characterEncoding=utf-8
+    password: Dgza6666
+    url: jdbc:mysql://49.234.115.250:3306/Mailapp?useUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 mybatis:
-  type-aliases-package: com.maple.bean
+  type-aliases-package: com.skpl.mailapp.entity
   mapper-locations: classpath:mapper/*.xml
