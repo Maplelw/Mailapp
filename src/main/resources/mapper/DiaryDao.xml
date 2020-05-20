@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skpl.mailapp.dao.DiaryDao">
+
+    <resultMap type="com.skpl.mailapp.entity.Diary" id="DiaryMap">
+        <result property="d_id" column="d_id" jdbcType="INTEGER"/>
+        <result property="d_executor" column="d_executor" jdbcType="VARCHAR"/>
+        <result property="d_execution" column="d_execution" jdbcType="VARCHAR"/>
+        <result property="d_time" column="d_time" jdbcType="TIMESTAMP"/>
+        <result property="d_state" column="d_state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="DiaryMap">
+        select
+          d_id, d_executor, d_execution, d_time, d_state
+        from Mailapp.diary
+        where d_id = #{dId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="DiaryMap">
+        select
+          d_id, d_executor, d_execution, d_time, d_state
+        from Mailapp.diary
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="DiaryMap">
+        select
+          d_id, d_executor, d_execution, d_time, d_state
+        from Mailapp.diary
+        <where>
+            <if test="dId != null">
+                and d_id = #{dId}
+            </if>
+            <if test="dExecutor != null and dExecutor != ''">
+                and d_executor = #{dExecutor}
+            </if>
+            <if test="dExecution != null and dExecution != ''">
+                and d_execution = #{dExecution}
+            </if>
+            <if test="dTime != null">
+                and d_time = #{dTime}
+            </if>
+            <if test="dState != null">
+                and d_state = #{dState}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="dId" useGeneratedKeys="true">
+        insert into Mailapp.diary(d_id, d_executor, d_execution, d_time, d_state)
+        values (#{dId}, #{dExecutor}, #{dExecution}, #{dTime}, #{dState})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update Mailapp.diary
+        <set>
+            <if test="dExecutor != null and dExecutor != ''">
+                d_executor = #{dExecutor},
+            </if>
+            <if test="dExecution != null and dExecution != ''">
+                d_execution = #{dExecution},
+            </if>
+            <if test="dTime != null">
+                d_time = #{dTime},
+            </if>
+            <if test="dState != null">
+                d_state = #{dState},
+            </if>
+        </set>
+        where d_id = #{dId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from Mailapp.diary where d_id = #{dId}
+    </delete>
+
+</mapper>

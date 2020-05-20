@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skpl.mailapp.dao.MailDao">
+
+    <resultMap type="com.skpl.mailapp.entity.Mail" id="MailMap">
+        <result property="mId" column="m_id" jdbcType="INTEGER"/>
+        <result property="mFrom" column="m_from" jdbcType="VARCHAR"/>
+        <result property="mTo" column="m_to" jdbcType="VARCHAR"/>
+        <result property="mSubject" column="m_subject" jdbcType="VARCHAR"/>
+        <result property="mContent" column="m_content" jdbcType="VARCHAR"/>
+        <result property="mTime" column="m_time" jdbcType="TIMESTAMP"/>
+        <result property="mFlag" column="m_flag" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="MailMap">
+        select
+          m_id, m_from, m_to, m_subject, m_content, m_time, m_flag
+        from Mailapp.mail
+        where m_id = #{mId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="MailMap">
+        select
+          m_id, m_from, m_to, m_subject, m_content, m_time, m_flag
+        from Mailapp.mail
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="MailMap">
+        select
+          m_id, m_from, m_to, m_subject, m_content, m_time, m_flag
+        from Mailapp.mail
+        <where>
+            <if test="mId != null">
+                and m_id = #{mId}
+            </if>
+            <if test="mFrom != null and mFrom != ''">
+                and m_from = #{mFrom}
+            </if>
+            <if test="mTo != null and mTo != ''">
+                and m_to = #{mTo}
+            </if>
+            <if test="mSubject != null and mSubject != ''">
+                and m_subject = #{mSubject}
+            </if>
+            <if test="mContent != null and mContent != ''">
+                and m_content = #{mContent}
+            </if>
+            <if test="mTime != null">
+                and m_time = #{mTime}
+            </if>
+            <if test="mFlag != null">
+                and m_flag = #{mFlag}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="mId" useGeneratedKeys="true">
+        insert into Mailapp.mail(m_id, m_from, m_to, m_subject, m_content, m_time, m_flag)
+        values (#{mId}, #{mFrom}, #{mTo}, #{mSubject}, #{mContent}, #{mTime}, #{mFlag})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update Mailapp.mail
+        <set>
+            <if test="mFrom != null and mFrom != ''">
+                m_from = #{mFrom},
+            </if>
+            <if test="mTo != null and mTo != ''">
+                m_to = #{mTo},
+            </if>
+            <if test="mSubject != null and mSubject != ''">
+                m_subject = #{mSubject},
+            </if>
+            <if test="mContent != null and mContent != ''">
+                m_content = #{mContent},
+            </if>
+            <if test="mTime != null">
+                m_time = #{mTime},
+            </if>
+            <if test="mFlag != null">
+                m_flag = #{mFlag},
+            </if>
+        </set>
+        where m_id = #{mId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from Mailapp.mail where m_id = #{mId}
+    </delete>
+
+    <!--通过邮箱号删除-->
+    <delete id="deleteByMailId">
+        delete from Mailapp.mail where m_from = #{mailID} or m_to = #{mailID}
+    </delete>
+
+</mapper>
