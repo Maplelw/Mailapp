@@ -3,10 +3,10 @@
 <mapper namespace="com.skpl.mailapp.dao.FriendshipDao">
 
     <resultMap type="com.skpl.mailapp.entity.Friendship" id="FriendshipMap">
-        <result property="fNo" column="f_no" jdbcType="INTEGER"/>
-        <result property="uEmail1" column="u_email1" jdbcType="VARCHAR"/>
-        <result property="uEmail2" column="u_email2" jdbcType="VARCHAR"/>
-        <result property="fNickname" column="f_nickname" jdbcType="VARCHAR"/>
+        <result property="f_no" column="f_no" jdbcType="INTEGER"/>
+        <result property="u_email1" column="u_email1" jdbcType="VARCHAR"/>
+        <result property="u_email2" column="u_email2" jdbcType="VARCHAR"/>
+        <result property="f_nickname" column="f_nickname" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--查询单个-->
@@ -14,7 +14,7 @@
         select
           f_no, u_email1, u_email2, f_nickname
         from Mailapp.friendship
-        where f_no = #{fNo}
+        where f_no = #{f_no}
     </select>
 
     <!--查询指定行数据-->
@@ -30,48 +30,34 @@
         select
           f_no, u_email1, u_email2, f_nickname
         from Mailapp.friendship
-        <where>
-            <if test="fNo != null">
-                and f_no = #{fNo}
-            </if>
-            <if test="uEmail1 != null and uEmail1 != ''">
-                and u_email1 = #{uEmail1}
-            </if>
-            <if test="uEmail2 != null and uEmail2 != ''">
-                and u_email2 = #{uEmail2}
-            </if>
-            <if test="fNickname != null and fNickname != ''">
-                and f_nickname = #{fNickname}
-            </if>
-        </where>
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="fNo" useGeneratedKeys="true">
+    <insert id="insert" keyProperty="f_no" useGeneratedKeys="true">
         insert into Mailapp.friendship(f_no, u_email1, u_email2, f_nickname)
-        values (#{fNo}, #{uEmail1}, #{uEmail2}, #{fNickname})
+        values (#{f_no}, #{u_email1}, #{u_email2}, #{f_nickname})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
         update Mailapp.friendship
         <set>
-            <if test="uEmail1 != null and uEmail1 != ''">
-                u_email1 = #{uEmail1},
+            <if test="u_email1 != null and u_email1 != ''">
+                u_email1 = #{u_email1},
             </if>
-            <if test="uEmail2 != null and uEmail2 != ''">
-                u_email2 = #{uEmail2},
+            <if test="u_email2 != null and u_email2 != ''">
+                u_email2 = #{u_email2},
             </if>
-            <if test="fNickname != null and fNickname != ''">
-                f_nickname = #{fNickname},
+            <if test="f_nickname != null and f_nickname != ''">
+                f_nickname = #{f_nickname},
             </if>
         </set>
-        where f_no = #{fNo}
+        where f_no = #{f_no}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from Mailapp.friendship where f_no = #{fNo}
+        delete from Mailapp.friendship where f_no = #{f_no}
     </delete>
 
 </mapper>

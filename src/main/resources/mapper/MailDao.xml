@@ -3,13 +3,13 @@
 <mapper namespace="com.skpl.mailapp.dao.MailDao">
 
     <resultMap type="com.skpl.mailapp.entity.Mail" id="MailMap">
-        <result property="mId" column="m_id" jdbcType="INTEGER"/>
-        <result property="mFrom" column="m_from" jdbcType="VARCHAR"/>
-        <result property="mTo" column="m_to" jdbcType="VARCHAR"/>
-        <result property="mSubject" column="m_subject" jdbcType="VARCHAR"/>
-        <result property="mContent" column="m_content" jdbcType="VARCHAR"/>
-        <result property="mTime" column="m_time" jdbcType="TIMESTAMP"/>
-        <result property="mFlag" column="m_flag" jdbcType="INTEGER"/>
+        <result property="m_id" column="m_id" jdbcType="INTEGER"/>
+        <result property="m_from" column="m_from" jdbcType="VARCHAR"/>
+        <result property="m_to" column="m_to" jdbcType="VARCHAR"/>
+        <result property="m_subject" column="m_subject" jdbcType="VARCHAR"/>
+        <result property="m_content" column="m_content" jdbcType="VARCHAR"/>
+        <result property="m_time" column="m_time" jdbcType="TIMESTAMP"/>
+        <result property="m_flag" column="m_flag" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--查询单个-->
@@ -17,7 +17,7 @@
         select
           m_id, m_from, m_to, m_subject, m_content, m_time, m_flag
         from Mailapp.mail
-        where m_id = #{mId}
+        where m_id = #{m_id}
     </select>
 
     <!--查询指定行数据-->
@@ -33,66 +33,43 @@
         select
           m_id, m_from, m_to, m_subject, m_content, m_time, m_flag
         from Mailapp.mail
-        <where>
-            <if test="mId != null">
-                and m_id = #{mId}
-            </if>
-            <if test="mFrom != null and mFrom != ''">
-                and m_from = #{mFrom}
-            </if>
-            <if test="mTo != null and mTo != ''">
-                and m_to = #{mTo}
-            </if>
-            <if test="mSubject != null and mSubject != ''">
-                and m_subject = #{mSubject}
-            </if>
-            <if test="mContent != null and mContent != ''">
-                and m_content = #{mContent}
-            </if>
-            <if test="mTime != null">
-                and m_time = #{mTime}
-            </if>
-            <if test="mFlag != null">
-                and m_flag = #{mFlag}
-            </if>
-        </where>
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="mId" useGeneratedKeys="true">
+    <insert id="insert" keyProperty="m_id" useGeneratedKeys="true">
         insert into Mailapp.mail(m_id, m_from, m_to, m_subject, m_content, m_time, m_flag)
-        values (#{mId}, #{mFrom}, #{mTo}, #{mSubject}, #{mContent}, #{mTime}, #{mFlag})
+        values (#{m_id}, #{m_from}, #{m_to}, #{m_subject}, #{m_content}, #{m_time}, #{m_flag})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
         update Mailapp.mail
         <set>
-            <if test="mFrom != null and mFrom != ''">
+            <if test="m_from != null and m_from != ''">
                 m_from = #{mFrom},
             </if>
-            <if test="mTo != null and mTo != ''">
-                m_to = #{mTo},
+            <if test="m_to != null and m_to != ''">
+                m_to = #{m_to},
             </if>
-            <if test="mSubject != null and mSubject != ''">
-                m_subject = #{mSubject},
+            <if test="m_subject != null and m_subject != ''">
+                m_subject = #{m_subject},
             </if>
-            <if test="mContent != null and mContent != ''">
-                m_content = #{mContent},
+            <if test="m_content != null and m_content != ''">
+                m_content = #{m_content},
             </if>
-            <if test="mTime != null">
-                m_time = #{mTime},
+            <if test="m_time != null">
+                m_time = #{m_time},
             </if>
-            <if test="mFlag != null">
-                m_flag = #{mFlag},
+            <if test="m_flag != null">
+                m_flag = #{m_flag},
             </if>
         </set>
-        where m_id = #{mId}
+        where m_id = #{m_id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from Mailapp.mail where m_id = #{mId}
+        delete from Mailapp.mail where m_id = #{m_id}
     </delete>
 
     <!--通过邮箱号删除-->

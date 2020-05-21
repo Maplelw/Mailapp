@@ -15,7 +15,7 @@
         select
           d_id, d_executor, d_execution, d_time, d_state
         from Mailapp.diary
-        where d_id = #{dId}
+        where d_id = #{d_id}
     </select>
 
     <!--查询指定行数据-->
@@ -31,46 +31,29 @@
         select
           d_id, d_executor, d_execution, d_time, d_state
         from Mailapp.diary
-        <where>
-            <if test="dId != null">
-                and d_id = #{dId}
-            </if>
-            <if test="dExecutor != null and dExecutor != ''">
-                and d_executor = #{dExecutor}
-            </if>
-            <if test="dExecution != null and dExecution != ''">
-                and d_execution = #{dExecution}
-            </if>
-            <if test="dTime != null">
-                and d_time = #{dTime}
-            </if>
-            <if test="dState != null">
-                and d_state = #{dState}
-            </if>
-        </where>
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="dId" useGeneratedKeys="true">
+    <insert id="insert" keyProperty="d_id" useGeneratedKeys="true">
         insert into Mailapp.diary(d_id, d_executor, d_execution, d_time, d_state)
-        values (#{dId}, #{dExecutor}, #{dExecution}, #{dTime}, #{dState})
+        values (#{d_id}, #{d_executor}, #{d_execution}, #{d_time}, #{d_tate})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
         update Mailapp.diary
         <set>
-            <if test="dExecutor != null and dExecutor != ''">
-                d_executor = #{dExecutor},
+            <if test="d_executor != null and d_executor != ''">
+                d_executor = #{d_executor},
             </if>
-            <if test="dExecution != null and dExecution != ''">
-                d_execution = #{dExecution},
+            <if test="d_execution != null and d_execution != ''">
+                d_execution = #{d_execution},
             </if>
-            <if test="dTime != null">
-                d_time = #{dTime},
+            <if test="d_time != null">
+                d_time = #{d_time},
             </if>
-            <if test="dState != null">
-                d_state = #{dState},
+            <if test="d_state != null">
+                d_state = #{d_state},
             </if>
         </set>
         where d_id = #{dId}
@@ -78,7 +61,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from Mailapp.diary where d_id = #{dId}
+        delete from Mailapp.diary where d_id = #{d_id}
     </delete>
 
 </mapper>

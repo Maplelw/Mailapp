@@ -31,7 +31,8 @@ public class POP3Server {
      * 服务器运行后监听
      * 创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程.
      */
-    public void start() {
+    public boolean start() {
+        boolean flag = true;
         try {
             if (serverSocket == null || serverSocket.isClosed()) {
                 System.out.println("pop3服务开启成功");
@@ -53,14 +54,17 @@ public class POP3Server {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            flag = false;
             System.out.println("Meet some problems......");
         }
+        return flag;
     }
 
     /**
      * 服务器停止
      */
-    public void stop() {
+    public boolean stop() {
+        boolean flag = true;
         try {
             if (serverSocket != null && !serverSocket.isClosed()) {
                 serverSocket.close();
@@ -70,8 +74,10 @@ public class POP3Server {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            flag = false;
             System.out.println("Meet some problems......");
         }
+        return flag;
     }
 
     public static void main(String[] args) {

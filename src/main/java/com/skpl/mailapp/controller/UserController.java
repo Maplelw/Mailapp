@@ -1,19 +1,24 @@
 package com.skpl.mailapp.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.skpl.mailapp.entity.Mail;
 import com.skpl.mailapp.entity.User;
 import com.skpl.mailapp.service.MailService;
 import com.skpl.mailapp.service.UserService;
 import com.skpl.mailapp.util.Md5Util;
+import com.sun.deploy.net.HttpRequest;
+import com.sun.deploy.net.HttpResponse;
+import org.apache.ibatis.annotations.Delete;
+import org.omg.CORBA.DATA_CONVERSION;
 import org.springframework.web.bind.annotation.*;
 import sun.security.provider.MD5;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.List;
+import javax.sound.midi.Soundbank;
+import java.util.*;
 
 /**
  * 记录用户的信息(User)表控制层
@@ -60,11 +65,43 @@ public class UserController {
         init();
         res.put("status", "success");
         List<User> list = this.userService.queryAll();
-        for (User item : list) {
-            item.setU_password(null);
+        List<User.UserToApp> resList = new ArrayList<>();
+        for (User user : list) {
+            user.setU_password(null);
+            resList.add(user.toUserToWeb(user));
         }
-        data.put("list", list);
+        data.put("list", resList);
         res.put("data", data);
+        return res;
+    }
+
+    /**
+     * 登录
+     *
+     * @return JSON对象
+     * @Date 2020/5/9 18:38
+     * @Param [userName, userPassword]
+     **/
+    @PostMapping("/login")
+    public JSONObject login(@RequestBody User user) {
+        init();
+        User correctUser;
+        if ((correctUser = userService.queryByEmail(user.getU_email())) != null) {
+            if (correctUser.getU_password().equals(Md5Util.md5(user.getU_password()))) {
+                data.put("userName", correctUser.getU_name());
+                data.put("userMail", correctUser.getU_email());
+                data.put("userId", correctUser.getU_id());
+                data.put("jwt", new String(Base64.getEncoder().encode(user.getU_email().getBytes())));
+                res.put("status", "success");
+                res.put("data", data);
+            } else {
+                res.put("status", "error");
+                res.put("error", "用户名密码不匹配");
+            }
+        } else {
+            res.put("status", "error");
+            res.put("error", "用户不存在");
+        }
         return res;
     }
 
@@ -75,9 +112,12 @@ public class UserController {
      * @Date 2020/4/25 14:14
      * @Param [userName, userMail, userPassword]
      **/
-    @GetMapping("user/add")
-    public JSONObject insert(String userName, String userMail, String userPassword) {
+    @PostMapping("user/add")
+    public JSONObject insert(@RequestBody Map map ) {
         init();
+        String userName =(String) map.get("userName");
+        String userMail =(String) map.get("userMail");
+        String userPassword =(String) map.get("userPassword");
         User user = new User(0, userMail, userName, Md5Util.md5(userPassword), "user", new Date());
         if (userService.queryByEmail(userMail) != null) {
             res.put("status", "error");
@@ -95,16 +135,17 @@ public class UserController {
     /**
      * 用户注销
      *
-     * @param uId 注销的邮箱号
+     * @param map 注销的邮箱号
      * @return 是否成功
      */
     @DeleteMapping("user")
-    public JSONObject deleteById(@RequestParam("userId") Integer uId) {
-        System.out.println(uId);
+    public JSONObject deleteById(@RequestBody Map map) {
+        Integer userId = Integer.parseInt((String)map.get("userId"));
+        System.out.println(userId);
         init();
-        if (userService.queryById(uId) != null) {
+        if (userService.queryById(userId) != null) {
             User user = new User();
-            user.setU_id(uId);
+            user.setU_id(userId);
             user.setU_type("logoff");
             userService.update(user);
             res.put("status", "success");
@@ -116,52 +157,23 @@ public class UserController {
     }
 
     /**
-     * 登录
-     *
-     * @return JSON对象
-     * @Date 2020/5/9 18:38
-     * @Param [userName, userPassword]
-     **/
-    @PatchMapping("/login")
-    public JSONObject login(HttpSession session, String userName, String userPassword) {
-        init();
-        User user;
-        if ((user = userService.queryByEmail(userName)) != null) {
-            if (user.getU_password().equals(Md5Util.md5(userPassword))) {
-                data.put("userName", user.getU_name());
-                data.put("userMail", user.getU_email());
-                data.put("userId", user.getU_id());
-                res.put("status", "success");
-                res.put("data", data);
-                // 登录状态保持
-                session.setAttribute("user", user);
-            } else {
-                res.put("status", "error");
-                res.put("error", "用户名密码不匹配");
-            }
-        } else {
-            res.put("status", "error");
-            res.put("error", "用户不存在");
-        }
-        return res;
-    }
-
-    /**
      * 修改密码
      *
+     * @return
      * @author maple
      * @Date 2020/5/9 23:27
      * @Param [session, oldPassword, newPassword]
-     * @return
      */
     @PutMapping("user")
-    public JSONObject changePassword(HttpSession session, @RequestParam("userOldPassword") String oldPassword, @RequestParam(("userPassword")) String newPassword) {
+    public JSONObject changePassword(HttpSession session, @RequestBody Map map) {
         init();
+        String newPassword = (String) map.get("UserPassword");
+        String oldPassword = (String) map.get("UserOldPassword");
         User user = (User) session.getAttribute("user");
-        if(Md5Util.md5(oldPassword).equals(user.getU_password())) {
+        if (Md5Util.md5(oldPassword).equals(user.getU_password())) {
             user.setU_password(Md5Util.md5(newPassword));
             userService.update(user);
-            res.put("status","success");
+            res.put("status", "success");
         } else {
             res.put("status", "error");
             res.put("error", "原密码错误");
@@ -171,57 +183,52 @@ public class UserController {
 
 
     /**
-     * 通过主键查询单条数据
+     * 查看邮件过滤列表
      *
-     * @param id 主键
-     * @return 单条数据
-     */
-    @GetMapping("selectOne")
-    public User selectOne(Integer id) {
-        return this.userService.queryById(id);
-    }
-
-    /**
-     * 查询多条数据
-     *
-     * @param offset 查询起始位置
-     * @param limit  查询条数
-     * @return 对象列表
-     */
-    @GetMapping("selectAll")
-    public List<User> queryAllByLimit(int offset, int limit) {
-        return this.userService.queryAllByLimit(offset, limit);
-    }
-
-    /**
-     * 修改用户信息
-     *
-     * @param user 实例对象
-     * @return 实例对象
-     */
-    @GetMapping("update")
-    public User update(User user) {
-        return this.userService.update(user);
-    }
-
-    /**
-     * 用户修改密码
-     *
-     * @param oldPassword 旧密码 newPassword 新密码
      * @return 是否成功
      */
-    @PutMapping()
-    public JSONObject changePassword(@RequestParam("UserOldPassword") String oldPassword, @RequestParam("UserPassword") String newPassword) {
+    @GetMapping("fliter")
+    public JSONObject getFilter() {
         init();
-        User user = userService.queryById(123);
-        if (user.getU_password().equals(oldPassword)) {
-            user.setU_password(newPassword);
-            userService.update(user);
-            res.put("status", "success");
-        } else {
-            res.put("status", "error");
-            res.put("error", "验证密码错误");
-        }
+        JSONObject list = new JSONObject();
+        JSONObject data = new JSONObject();
+        list.put("filterMail","qaq@skpl.com");
+        list.put("fliterId","001");
+        list.put("fliterIp","125.246.223.332");
+        data.put("list",list);
+        res.put("status","success");
+        res.put("data",data);
+        return res;
+    }
+
+    /**
+     * 添加过滤
+     *
+     * @return 是否成功
+     */
+    @PostMapping("fliter")
+    public JSONObject addFilter() {
+        init();
+        JSONObject filterId = new JSONObject();
+        JSONObject data = new JSONObject();
+        filterId.put("fliterID","001");
+        data.put("filterId",filterId);
+        res.put("status","success");
+        res.put("data",data);
+        return res;
+    }
+
+    /**
+     * 删除一个过滤
+     *
+     * @return 是否成功
+     */
+    @DeleteMapping("fliter")
+    public JSONObject deleteFilter(@RequestBody Map map) {
+        init();
+        //Integer filterId = Integer.parseInt((String) map.get("fliterId"));
+        System.out.println(map.get("fliterId"));
+        res.put("status","success");
         return res;
     }
 
