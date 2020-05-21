@@ -73,7 +73,7 @@ public class FriendshipServiceImpl implements FriendshipService {
     @Override
     public Friendship update(Friendship friendship) {
         this.friendshipDao.update(friendship);
-        return this.queryById(friendship.getFNo());
+        return this.queryById(friendship.getF_no());
     }
 
     /**

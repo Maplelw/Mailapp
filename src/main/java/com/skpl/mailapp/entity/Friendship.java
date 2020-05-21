@@ -18,19 +18,19 @@ public class Friendship implements Serializable {
     /**
     * 记录编号
     */
-    private Integer fNo;
+    private Integer f_no;
     /**
     * email xxx@xxx.com
     */
-    private String uEmail1;
+    private String u_email1;
     /**
     * email xxx@xxx.com
     */
-    private String uEmail2;
+    private String u_email2;
     /**
     * 给好友取的昵称
     */
-    private String fNickname;
+    private String f_nickname;
 
 
 }

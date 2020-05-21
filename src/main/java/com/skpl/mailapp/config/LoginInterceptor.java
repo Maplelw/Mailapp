@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Base64;
 
 /**
  * @author maple
@@ -15,14 +16,9 @@ import javax.servlet.http.HttpSession;
 public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//        HttpSession session = request.getSession();
-//        User user = (User) session.getAttribute("user");
-//        Admin admin = (Admin) session.getAttribute("admin");
-//        System.out.println("==========进入了拦截器==============");
-//        if (user != null || admin != null) {
-//            return true;
-//        }
-//        System.out.println("===========未登录===============");
+        System.out.println(request.getHeader("jwt"));
+        String userMail = new String(Base64.getDecoder().decode(request.getHeader("jwt").getBytes()));
+        System.out.println(userMail);
         return true;
     }
 

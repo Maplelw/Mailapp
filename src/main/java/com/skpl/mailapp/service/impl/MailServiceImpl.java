@@ -73,7 +73,7 @@ public class MailServiceImpl implements MailService {
     @Override
     public Mail update(Mail mail) {
         this.mailDao.update(mail);
-        return this.queryById(mail.getMId());
+        return this.queryById(mail.getM_id());
     }
 
     /**

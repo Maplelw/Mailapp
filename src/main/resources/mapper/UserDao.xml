@@ -16,7 +16,7 @@
         select
           u_id, u_email, u_name, u_password, u_type, u_time
         from Mailapp.user
-        where u_id = #{uId}
+        where u_id = #{u_id}
     </select>
 
     <!--根据邮箱号查询单个-->
@@ -24,7 +24,7 @@
         select
             u_id, u_email, u_name, u_password, u_type, u_time
         from Mailapp.user
-        where u_email = #{uEmail}
+        where u_email = #{u_email}
     </select>
 
     <!--查询指定行数据-->
@@ -40,62 +40,40 @@
         select
           u_id, u_email, u_name, u_password, u_type, u_time
         from Mailapp.user
-        <where>
-            <if test="uId != null">
-                and u_id = #{uId}
-            </if>
-            <if test="uEmail != null and uEmail != ''">
-                and u_email = #{uEmail}
-            </if>
-            <if test="uName != null and uName != ''">
-                and u_name = #{uName}
-            </if>
-            <if test="uPassword != null and uPassword != ''">
-                and u_password = #{uPassword}
-            </if>
-            <if test="uType != null and uType != ''">
-                and u_type = #{uType}
-            </if>
-            <if test="uTime != null">
-                and u_time = #{uTime}
-            </if>
-            and
-            u_type != 'logoff'
-        </where>
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="uId" useGeneratedKeys="true">
+    <insert id="insert" keyProperty="u_id" useGeneratedKeys="true">
         insert into Mailapp.user(u_email, u_name, u_password, u_type, u_time)
-        values (#{uEmail}, #{uName}, #{uPassword}, #{uType}, #{uTime})
+        values (#{u_email}, #{u_name}, #{u_password}, #{u_type}, #{u_time})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
         update Mailapp.user
         <set>
-            <if test="uEmail != null and uEmail != ''">
-                u_email = #{uEmail},
+            <if test="u_email != null and u_email != ''">
+                u_email = #{u_email},
             </if>
-            <if test="uName != null and uName != ''">
-                u_name = #{uName},
+            <if test="u_name != null and u_name != ''">
+                u_name = #{u_name},
             </if>
-            <if test="uPassword != null and uPassword != ''">
-                u_password = #{uPassword},
+            <if test="u_password != null and u_password != ''">
+                u_password = #{u_password},
             </if>
-            <if test="uType != null and uType != ''">
-                u_type = #{uType},
+            <if test="u_type != null and u_type != ''">
+                u_type = #{u_type},
             </if>
-            <if test="uTime != null">
-                u_time = #{uTime},
+            <if test="u_time != null">
+                u_time = #{u_time},
             </if>
         </set>
-        where u_id = #{uId}
+        where u_id = #{u_id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from Mailapp.user where u_id = #{uId}
+        delete from Mailapp.user where u_id = #{u_id}
     </delete>
 
 </mapper>
