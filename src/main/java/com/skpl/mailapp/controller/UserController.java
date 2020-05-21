@@ -7,13 +7,9 @@ import com.skpl.mailapp.entity.User;
 import com.skpl.mailapp.service.MailService;
 import com.skpl.mailapp.service.UserService;
 import com.skpl.mailapp.util.Md5Util;
-import com.sun.deploy.net.HttpRequest;
-import com.sun.deploy.net.HttpResponse;
-import org.apache.ibatis.annotations.Delete;
-import org.omg.CORBA.DATA_CONVERSION;
+
 import org.springframework.web.bind.annotation.*;
 import sun.security.provider.MD5;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

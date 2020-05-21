@@ -1,5 +1,6 @@
 package com.skpl.mailapp.config;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -12,10 +13,15 @@ public class AdminInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
+        response.setCharacterEncoding("utf-8");
         if(session.getAttribute("adminName")!=null)
             return true;
         else {
             System.out.println("管理员未登录");
+            JSONObject res = new JSONObject();
+            res.put("status","error");
+            res.put("error","您没有登录");
+            response.getWriter().write(res.toJSONString());
             return false;
         }
     }
