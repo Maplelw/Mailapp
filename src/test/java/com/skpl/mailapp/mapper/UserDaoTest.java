@@ -29,7 +29,5 @@ public class UserDaoTest {
 
     @Test
     void insert() {
-        User user = new User(0,"4554","456","456","user",new Date());
-        userDao.insert(user);
     }
 }

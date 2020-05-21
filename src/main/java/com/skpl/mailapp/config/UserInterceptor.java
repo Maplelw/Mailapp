@@ -1,5 +1,6 @@
 package com.skpl.mailapp.config;
 
+import com.alibaba.fastjson.JSONObject;
 import com.skpl.mailapp.entity.Admin;
 import com.skpl.mailapp.entity.User;
 import com.skpl.mailapp.service.UserService;
@@ -20,6 +21,7 @@ public class UserInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         boolean flag = false;
+        response.setCharacterEncoding("utf-8");
         // 用户请求
         if(request.getHeader("jwt") != null) {
             String userMail;
@@ -42,6 +44,11 @@ public class UserInterceptor implements HandlerInterceptor {
         }
         if(!flag) {
             System.out.println("请求被拦截");
+            System.out.println("用户未登录");
+            JSONObject res = new JSONObject();
+            res.put("status","error");
+            res.put("error","您没有登录");
+            response.getWriter().write(res.toJSONString());
         }
         return flag;
     }
