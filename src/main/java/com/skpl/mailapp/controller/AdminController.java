@@ -13,6 +13,7 @@ import com.skpl.mailapp.util.Md5Util;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -157,7 +158,7 @@ public class AdminController {
      * @Param [userName, password]
      */
     @RequestMapping("login")
-    public JSONObject login(String a_no, String a_password) {
+    public JSONObject login(HttpSession session,String a_no, String a_password) {
         Admin admin = adminService.queryByName(a_no);
         JSONObject response = new JSONObject();
         if (admin == null) {
@@ -165,13 +166,12 @@ public class AdminController {
             response.put("msg", "账号不存在");
             System.out.println(1);
         } else {
-            System.out.println(Md5Util.md5("123456"));
-            System.out.println(admin.getA_password());
             if (Md5Util.md5(a_password).equals(admin.getA_password())) {
                 admin.setA_password(null);
                 response.put("flag", 1);
                 response.put("msg", "密码正确");
                 response.put("user", admin);
+                session.setAttribute("adminName",admin.getA_name());
             } else {
                 response.put("flag", 0);
                 response.put("msg", "密码错误");

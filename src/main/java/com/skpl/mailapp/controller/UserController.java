@@ -165,18 +165,24 @@ public class UserController {
      * @Param [session, oldPassword, newPassword]
      */
     @PutMapping("user")
-    public JSONObject changePassword(HttpSession session, @RequestBody Map map) {
+    public JSONObject changePassword(HttpServletRequest request, @RequestBody Map map) {
         init();
         String newPassword = (String) map.get("UserPassword");
         String oldPassword = (String) map.get("UserOldPassword");
-        User user = (User) session.getAttribute("user");
-        if (Md5Util.md5(oldPassword).equals(user.getU_password())) {
-            user.setU_password(Md5Util.md5(newPassword));
-            userService.update(user);
-            res.put("status", "success");
-        } else {
+        String userMail = new String(Base64.getDecoder().decode(request.getHeader("jwt").getBytes()));
+        User user =  userService.queryByEmail(userMail);
+        if(user == null) {
             res.put("status", "error");
-            res.put("error", "原密码错误");
+            res.put("error", "用户不存在");
+        } else {
+            if (Md5Util.md5(oldPassword).equals(user.getU_password())) {
+                user.setU_password(Md5Util.md5(newPassword));
+                userService.update(user);
+                res.put("status", "success");
+            } else {
+                res.put("status", "error");
+                res.put("error", "原密码错误");
+            }
         }
         return res;
     }
