@@ -1,7 +1,5 @@
 package com.skpl.mailapp.config;
 
-import com.skpl.mailapp.entity.Admin;
-import com.skpl.mailapp.entity.User;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -10,16 +8,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Base64;
 
-/**
- * @author maple
- */
-public class LoginInterceptor implements HandlerInterceptor {
+public class AdminInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println(request.getHeader("jwt"));
-        String userMail = new String(Base64.getDecoder().decode(request.getHeader("jwt").getBytes()));
-        System.out.println(userMail);
-        return true;
+        HttpSession session = request.getSession();
+        if(session.getAttribute("adminName")!=null)
+            return true;
+        else {
+            System.out.println("管理员未登录");
+            return false;
+        }
     }
 
     @Override
@@ -32,4 +30,3 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     }
 }
-

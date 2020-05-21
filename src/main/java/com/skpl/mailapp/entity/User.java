@@ -53,68 +53,68 @@ public class User implements Serializable {
     }
 
     public class UserToApp {
-        private Integer u_id;
-        private String u_email;
-        private String u_name;
-        private String u_password;
-        private String u_type;
-        private String u_time;
+        private Integer userId;
+        private String userMail;
+        private String userName;
+        private String userPassword;
+        private String userType;
+        private String time;
 
-        public UserToApp(Integer u_id, String u_email, String u_name, String u_password, String u_type, String u_time) {
-            this.u_id = u_id;
-            this.u_email = u_email;
-            this.u_name = u_name;
-            this.u_password = u_password;
-            this.u_type = u_type;
-            this.u_time = u_time;
+        public UserToApp(Integer userId, String userMail, String userName, String userPassword, String userType, String time) {
+            this.userId = userId;
+            this.userMail = userMail;
+            this.userName = userName;
+            this.userPassword = userPassword;
+            this.userType = userType;
+            this.time = time;
         }
 
-        public Integer getU_id() {
-            return u_id;
+        public Integer getUserId() {
+            return userId;
         }
 
-        public void setU_id(Integer u_id) {
-            this.u_id = u_id;
+        public void setUserId(Integer userId) {
+            this.userId = userId;
         }
 
-        public String getU_email() {
-            return u_email;
+        public String getUserMail() {
+            return userMail;
         }
 
-        public void setU_email(String u_email) {
-            this.u_email = u_email;
+        public void setUserMail(String userMail) {
+            this.userMail = userMail;
         }
 
-        public String getU_name() {
-            return u_name;
+        public String getUserName() {
+            return userName;
         }
 
-        public void setU_name(String u_name) {
-            this.u_name = u_name;
+        public void setUserName(String userName) {
+            this.userName = userName;
         }
 
-        public String getU_password() {
-            return u_password;
+        public String getUserPassword() {
+            return userPassword;
         }
 
-        public void setU_password(String u_password) {
-            this.u_password = u_password;
+        public void setUserPassword(String userPassword) {
+            this.userPassword = userPassword;
         }
 
-        public String getU_type() {
-            return u_type;
+        public String getUserType() {
+            return userType;
         }
 
-        public void setU_type(String u_type) {
-            this.u_type = u_type;
+        public void setUserType(String userType) {
+            this.userType = userType;
         }
 
-        public String getU_time() {
-            return u_time;
+        public String getTime() {
+            return time;
         }
 
-        public void setU_time(String u_time) {
-            this.u_time = u_time;
+        public void setTime(String time) {
+            this.time = time;
         }
     }
 }
