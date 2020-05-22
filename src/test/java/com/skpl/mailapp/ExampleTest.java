@@ -1,14 +1,10 @@
 package com.skpl.mailapp;
 import com.skpl.mailapp.entity.Diary;
 import com.skpl.mailapp.service.DiaryService;
-import com.skpl.mailapp.util.Md5Util;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import sun.java2d.pipe.SpanShapeRenderer;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 

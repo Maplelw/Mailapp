@@ -64,7 +64,7 @@ public class UserController {
         List<User.UserToApp> resList = new ArrayList<>();
         for (User user : list) {
             user.setU_password(null);
-            resList.add(user.toUserToWeb(user));
+            resList.add(user.toUserToApp(user));
         }
         data.put("list", resList);
         res.put("data", data);

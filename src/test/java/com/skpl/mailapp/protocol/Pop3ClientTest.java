@@ -1,6 +1,8 @@
-package com.skpl.mailapp.protocol.smtp;
+package com.skpl.mailapp.protocol;
+
 
 import java.util.Base64;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -14,14 +16,14 @@ import java.util.Date;
 /**
  * @author liuwang
  */
-public class SMTPClient {
+public class Pop3ClientTest {
     String mailServer;
     String from;
     String to;
     String subject;
     String content;
     String lineFeet = "\r\n";
-    private int port = 25;
+    private int port = 109;
 
     Socket client;
     BufferedReader bf;
@@ -86,10 +88,6 @@ public class SMTPClient {
             bf = new BufferedReader(new InputStreamReader(client.getInputStream()));
             dos = new DataOutputStream(client.getOutputStream());
             String isConnect = getResponse();
-            if (!isConnect.startsWith("220")) {
-                System.out.println("建立连接失败： " + isConnect);
-                res = false;
-            }
         } catch (UnknownHostException e) {
             System.out.println("建立连接失败！");
             e.printStackTrace();
@@ -109,15 +107,17 @@ public class SMTPClient {
      * @param msg
      * @return
      */
-    private String sendCommand(String msg) {
+    public String sendCommand(String msg) {
         String result = null;
         try {
             dos.writeBytes(msg);
             dos.flush();
             result = getResponse();
+            System.out.println("S:" + result);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return result;
     }
 
@@ -170,14 +170,12 @@ public class SMTPClient {
         }
         //发送用户名
         result = sendCommand(Base64.getEncoder().encode(from.getBytes()) + lineFeet);
-        System.out.println( result);
+        System.out.println(result);
         if (!isStartWith(result, "334")) {
             System.out.println("==>用户名错误");
             return false;
         }
         //发送密码
-        //EBQKCKORKNUDKVYF
-        //LWVRFAFKZCZWVEBC
         result = sendCommand(Base64.getEncoder().encode(userPassword.getBytes()) + lineFeet);
         System.out.println(result);
         if (!isStartWith(result, "235")) {
@@ -199,7 +197,7 @@ public class SMTPClient {
 
     private boolean sendRCPT() {
         //发送 RCPT TO
-        String result = sendCommand("RCPT TO:" + to +  lineFeet);
+        String result = sendCommand("RCPT TO:" + to + lineFeet);
         System.out.println("S:" + result);
         if (!isStartWith(result, "250")) {
             System.out.println("==>发送RCPT TO错误");
@@ -291,17 +289,10 @@ public class SMTPClient {
      * 主函数测试
      */
     public static void main(String[] args) {
-        SMTPClient mail = new SMTPClient();
-        mail.setMailServer("localhost");
-        mail.setFrom("tozsy@skpl.com");
-        mail.setTo("1711754407@qq.com");
-        mail.setSubject("Hello Email");
-        mail.setContent("Hello,this is a test mail, please replay me if you have received it");
-        boolean boo = mail.sendMail("yuge666");
-        if (boo) {
-            System.out.println("邮件发送成功");
-        } else {
-            System.out.println("邮件发送失败");
-        }
+        Pop3ClientTest client = new Pop3ClientTest();
+        client.setMailServer("localhost");
+        client.init();
+        client.sendCommand("user 1");
+       client.sendCommand("pass 1");
     }
 }

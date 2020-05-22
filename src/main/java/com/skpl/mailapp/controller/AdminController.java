@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.skpl.mailapp.entity.Admin;
 import com.skpl.mailapp.entity.Diary;
 import com.skpl.mailapp.entity.User;
-import com.skpl.mailapp.protocol.pop3.server.POP3Server;
+import com.skpl.mailapp.protocol.pop3Maple.server.POP3Server;
 import com.skpl.mailapp.protocol.smtp.SMTPServer;
 import com.skpl.mailapp.service.AdminService;
 import com.skpl.mailapp.service.DiaryService;
@@ -158,7 +158,7 @@ public class AdminController {
      * @Param [userName, password]
      */
     @RequestMapping("login")
-    public JSONObject login(HttpSession session,String a_no, String a_password) {
+    public JSONObject login(HttpSession session, String a_no, String a_password) {
         Admin admin = adminService.queryByName(a_no);
         JSONObject response = new JSONObject();
         if (admin == null) {
@@ -171,7 +171,7 @@ public class AdminController {
                 response.put("flag", 1);
                 response.put("msg", "密码正确");
                 response.put("user", admin);
-                session.setAttribute("adminName",admin.getA_name());
+                session.setAttribute("adminName", admin.getA_name());
             } else {
                 response.put("flag", 0);
                 response.put("msg", "密码错误");
@@ -189,7 +189,7 @@ public class AdminController {
     @GetMapping("list")
     public JSONObject userList() {
         List<User> list = userService.queryAll();
-        List<User.UserToApp> resList = new ArrayList<>();
+        List<User.UserToWeb> resList = new ArrayList<>();
         for (User user : list) {
             user.setU_password(null);
             resList.add(user.toUserToWeb(user));
@@ -228,18 +228,25 @@ public class AdminController {
      * @Date 2020/5/20 22:32
      */
     @GetMapping("edit")
-    public JSONObject editUser(String u_name, String u_email, String u_type) {
+    public JSONObject editUser(String u_id, String u_name, String u_email, String u_type) {
         JSONObject response = new JSONObject();
-        if (userService.queryByEmail(u_email) == null) {
-            User user = new User(0, u_email, u_name, "密码", u_type, new Date());
-            userService.insert(user);
-            response.put("flag", 1);
-            response.put("msg", "添加成功");
-        } else {
+        Integer id ;
+        try {
+            id = Integer.parseInt(u_id);
+            if (userService.queryById(id) != null) {
+                User user = new User(id, u_email, u_name, "", u_type, new Date());
+                userService.update(user);
+                response.put("flag", 1);
+                response.put("msg", "修改成功");
+            } else {
+                response.put("flag", 0);
+                response.put("msg", "错误的id");
+            }
+        } catch (Exception e) {
             response.put("flag", 0);
-            response.put("msg", "用户已存在");
+            response.put("msg", "id不正确");
+            System.out.println("修改时给定id不正确");
         }
-
         return response;
     }
 
@@ -275,7 +282,7 @@ public class AdminController {
         JSONObject response = new JSONObject();
         List<Diary> diaries = diaryService.queryAll();
         List<Diary.DiaryToWeb> resDiaries = new ArrayList<>();
-        for(Diary diary : diaries) {
+        for (Diary diary : diaries) {
             resDiaries.add(diary.toDiaryToWeb(diary));
             System.out.println(diary.toDiaryToWeb(diary));
         }

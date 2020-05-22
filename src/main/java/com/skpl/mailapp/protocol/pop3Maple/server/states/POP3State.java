@@ -1,4 +1,4 @@
-package com.skpl.mailapp.protocol.pop3.server.states;
+package com.skpl.mailapp.protocol.pop3Maple.server.states;
 
 /**
  * @author maple
