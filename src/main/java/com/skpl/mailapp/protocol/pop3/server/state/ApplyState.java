@@ -1,5 +1,6 @@
 package com.skpl.mailapp.protocol.pop3.server.state;
 
+
 import com.skpl.mailapp.protocol.pop3.server.Manager;
 import com.skpl.mailapp.protocol.pop3.server.context.POP3Context;
 import com.skpl.mailapp.protocol.pop3.server.domain.User;
@@ -106,7 +107,7 @@ public class ApplyState implements POP3State{
         if(Integer.parseInt(args[1]) > mailNum){
             pop3Context.feedbackToClient("-ERR No Such Mail");
         }
-        pop3Context.feedbackToClient("+OK "+Manager.getMailByte(this.user.getUsername(),Integer.parseInt(args[1]))+"\r\n"+Manager.getMailTotalContent(this.user.getUsername(),Integer.parseInt(args[1])));
+        pop3Context.feedbackToClient("+OK retr "+Manager.getMailByte(this.user.getUsername(),Integer.parseInt(args[1]))+"\r\n"+Manager.getMailTotalContent(this.user.getUsername(),Integer.parseInt(args[1])));
     }
 
     /**

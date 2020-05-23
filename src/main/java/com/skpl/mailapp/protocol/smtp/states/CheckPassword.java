@@ -1,5 +1,6 @@
 package com.skpl.mailapp.protocol.smtp.states;
 
+import com.skpl.mailapp.entity.User;
 import com.skpl.mailapp.protocol.smtp.context.SmtpContext;
 import com.skpl.mailapp.service.UserService;
 import com.skpl.mailapp.util.Md5Util;
@@ -7,6 +8,7 @@ import com.skpl.mailapp.util.SpringUtil;
 
 import javax.annotation.Resource;
 import java.util.Base64;
+import java.util.Date;
 
 
 /**
@@ -34,11 +36,15 @@ public class CheckPassword implements SMTPState {
             // 获取系统对应的密码
             UserService userService = (UserService) SpringUtil.getBean("userService");
             String password = Md5Util.md5(new String(Base64.getDecoder().decode(data)));
-            String correctPassword = userService.queryByEmail(smtpContext.getUserMail()).getU_password();
+            User user = userService.queryByEmail(smtpContext.getUserMail());
+            String correctPassword = user.getU_password();
             // 密码正确
             if (password.equals(correctPassword)) {
-                smtpContext.sendData("235 Authentication successful");
+                // 设置最近登录时间
+                user.setU_time(new Date());
+                userService.update(user);
                 // 设置下一个状态
+                smtpContext.sendData("235 Authentication successful");
                 smtpContext.setCurrentState(new WaitForMailFromState(smtpContext));
             }
             // 密码错误

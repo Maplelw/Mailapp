@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.skpl.mailapp.entity.Admin;
 import com.skpl.mailapp.entity.Diary;
 import com.skpl.mailapp.entity.User;
-import com.skpl.mailapp.protocol.pop3Maple.server.POP3Server;
+import com.skpl.mailapp.protocol.pop3.server.POP3Server;
 import com.skpl.mailapp.protocol.smtp.SMTPServer;
 import com.skpl.mailapp.service.AdminService;
 import com.skpl.mailapp.service.DiaryService;
@@ -122,31 +122,19 @@ public class AdminController {
     @GetMapping("filter")
     public JSONObject mailFilter(String action) {
         JSONObject response = new JSONObject();
-        response.put("flag", 0);
-        response.put("msg", "还没有做，就测试一下接口");
-//        if (action == null) {
-//            response.put("flag", 0);
-//            response.put("msg", "错误的action");
-//        } else if (action.equals("1")) { //开启smtp
-//            if (SMTPServer.startServer()) {
-//                response.put("flag", 1);
-//                response.put("msg", "smtp开启成功");
-//            } else {
-//                response.put("flag", 0);
-//                response.put("msg", "smtp开启失败");
-//            }
-//        } else if (action.equals("0")) { // 关闭smtp
-//            if (SMTPServer.stopServer()) {
-//                response.put("flag", 1);
-//                response.put("msg", "smtp关闭成功");
-//            } else {
-//                response.put("flag", 0);
-//                response.put("msg", "smtp关闭失败");
-//            }
-//        } else { // 错误命令
-//            response.put("flag", "0");
-//            response.put("msg", "错误的action");
-//        }
+        if (action == null) {
+            response.put("flag", 0);
+            response.put("msg", "错误的action");
+        } else if ("0".equals(action)) {
+            response.put("flag", 1);
+            response.put("msg", "关闭成功");
+        } else if ("1".equals(action)) {
+            response.put("flag", 1);
+            response.put("msg", "开启成功");
+        } else {
+            response.put("flag", 0);
+            response.put("msg", "错误的命令");
+        }
         return response;
     }
 
@@ -157,14 +145,14 @@ public class AdminController {
      * @Date 2020/5/20 21:55
      * @Param [userName, password]
      */
-    @RequestMapping("login")
-    public JSONObject login(HttpSession session, String a_no, String a_password) {
-        Admin admin = adminService.queryByName(a_no);
+    @PostMapping("login")
+    public JSONObject login(HttpSession session, String a_name, String a_password) {
+        Admin admin = adminService.queryByName(a_name);
+        System.out.println(a_name);
         JSONObject response = new JSONObject();
         if (admin == null) {
             response.put("flag", 0);
             response.put("msg", "账号不存在");
-            System.out.println(1);
         } else {
             if (Md5Util.md5(a_password).equals(admin.getA_password())) {
                 admin.setA_password(null);
@@ -230,7 +218,7 @@ public class AdminController {
     @GetMapping("edit")
     public JSONObject editUser(String u_id, String u_name, String u_email, String u_type) {
         JSONObject response = new JSONObject();
-        Integer id ;
+        Integer id;
         try {
             id = Integer.parseInt(u_id);
             if (userService.queryById(id) != null) {

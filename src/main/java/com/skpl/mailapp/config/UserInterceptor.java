@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Base64;
+import java.util.Date;
 
 /**
  * @author maple
@@ -22,6 +23,7 @@ public class UserInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         boolean flag = false;
         response.setCharacterEncoding("utf-8");
+        request.setCharacterEncoding("utf-8");
         // 用户请求
         if(request.getHeader("jwt") != null) {
             String userMail;
@@ -31,6 +33,8 @@ public class UserInterceptor implements HandlerInterceptor {
                 UserService userService = (UserService) SpringUtil.getBean("userService");
                 User user = userService.queryByEmail(userMail);
                 if(user != null ) {
+                    user.setU_time(new Date());
+                    userService.update(user);
                     flag = true;
                 }
             } catch (Exception e) {
@@ -39,12 +43,12 @@ public class UserInterceptor implements HandlerInterceptor {
         }
         // 可能是管理员请求
         HttpSession session = request.getSession();
+        System.out.println(session.getAttribute("adminName"));
         if(session.getAttribute("adminName") != null) {
             flag = true;
         }
         if(!flag) {
             System.out.println("请求被拦截");
-            System.out.println("用户未登录");
             JSONObject res = new JSONObject();
             res.put("status","error");
             res.put("error","您没有登录");

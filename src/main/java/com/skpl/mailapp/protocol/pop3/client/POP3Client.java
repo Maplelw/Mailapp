@@ -15,7 +15,7 @@ public class POP3Client {
         String server = "localhost";
         String user = "maple";
         String password = "123456";
-        int port = 109;
+        int port = 110;
         POP3Client pop3Client = new POP3Client(server,port);
         pop3Client.receiveMail(user,password);
     }

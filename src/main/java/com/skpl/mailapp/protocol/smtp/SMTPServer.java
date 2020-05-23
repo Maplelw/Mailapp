@@ -15,7 +15,7 @@ public class SMTPServer {
     public static boolean startServer() {
         boolean flag = true;
         try {
-            if (serverSocket == null || serverSocket.isClosed() == true) {
+            if (serverSocket == null || serverSocket.isClosed()) {
                 serverSocket = new ServerSocket(port);
                 System.out.println("smtp服务开启成功");
                 while (true) {

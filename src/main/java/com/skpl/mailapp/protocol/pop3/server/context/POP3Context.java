@@ -52,7 +52,6 @@ public class POP3Context implements Runnable{
             try{
                 String inputString = br.readLine();
                 this.pop3ReceiveService.handleInputCommand(this,inputString);
-
                 if(client == null){
                     break;
                 }
