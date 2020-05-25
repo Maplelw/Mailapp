@@ -1,19 +1,13 @@
 package com.skpl.mailapp.service.impl;
 
-<<<<<<< HEAD
-=======
 import com.skpl.mailapp.entity.User;
->>>>>>> dev
 import com.skpl.mailapp.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-<<<<<<< HEAD
-=======
 import java.util.List;
 
->>>>>>> dev
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -53,8 +47,6 @@ class UserServiceImplTest {
     void deleteById() {
     }
 
-<<<<<<< HEAD
-=======
     @Test
     void testQueryById() {
     }
@@ -90,5 +82,4 @@ class UserServiceImplTest {
     @Test
     void testDeleteById() {
     }
->>>>>>> dev
 }

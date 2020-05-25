@@ -41,8 +41,6 @@ public class AdminController {
 
 
     /**
-<<<<<<< HEAD
-=======
      * pop3服务
      *
      * @author maple
@@ -68,7 +66,6 @@ public class AdminController {
     }
 
     /**
->>>>>>> dev
      * smtp服务
      *
      * @param action 1开0关
@@ -81,11 +78,7 @@ public class AdminController {
         if (action == null) {
             response.put("flag", 0);
             response.put("msg", "错误的action");
-<<<<<<< HEAD
-        } else if (action.equals("1")) { //开启smtp
-=======
         } else if ("1".equals(action)) { //开启smtp
->>>>>>> dev
             if (SMTPServer.startServer()) {
                 response.put("flag", 1);
                 response.put("msg", "smtp开启成功");
@@ -93,11 +86,7 @@ public class AdminController {
                 response.put("flag", 0);
                 response.put("msg", "smtp开启失败");
             }
-<<<<<<< HEAD
-        } else if (action.equals("0")) { // 关闭smtp
-=======
         } else if ("0".equals(action)) { // 关闭smtp
->>>>>>> dev
             if (SMTPServer.stopServer()) {
                 response.put("flag", 1);
                 response.put("msg", "smtp关闭成功");
@@ -113,20 +102,12 @@ public class AdminController {
     }
 
     /**
-<<<<<<< HEAD
-     * pop3服务
-=======
      * pop3服务 real
->>>>>>> dev
      *
      * @author maple
      * @Date 2020/5/20 16:18
      */
-<<<<<<< HEAD
-    @GetMapping("pop3")
-=======
     @GetMapping("pop3r")
->>>>>>> dev
     public JSONObject pop3(String action) {
         POP3Server pop3Server = new POP3Server(109);
         JSONObject response = new JSONObject();
@@ -166,33 +147,6 @@ public class AdminController {
     @GetMapping("filter")
     public JSONObject mailFilter(String action) {
         JSONObject response = new JSONObject();
-<<<<<<< HEAD
-        response.put("flag", 0);
-        response.put("msg", "还没有做，就测试一下接口");
-//        if (action == null) {
-//            response.put("flag", 0);
-//            response.put("msg", "错误的action");
-//        } else if (action.equals("1")) { //开启smtp
-//            if (SMTPServer.startServer()) {
-//                response.put("flag", 1);
-//                response.put("msg", "smtp开启成功");
-//            } else {
-//                response.put("flag", 0);
-//                response.put("msg", "smtp开启失败");
-//            }
-//        } else if (action.equals("0")) { // 关闭smtp
-//            if (SMTPServer.stopServer()) {
-//                response.put("flag", 1);
-//                response.put("msg", "smtp关闭成功");
-//            } else {
-//                response.put("flag", 0);
-//                response.put("msg", "smtp关闭失败");
-//            }
-//        } else { // 错误命令
-//            response.put("flag", "0");
-//            response.put("msg", "错误的action");
-//        }
-=======
         if (action == null) {
             response.put("flag", 0);
             response.put("msg", "错误的action");
@@ -206,7 +160,6 @@ public class AdminController {
             response.put("flag", 0);
             response.put("msg", "错误的命令");
         }
->>>>>>> dev
         return response;
     }
 
@@ -217,34 +170,20 @@ public class AdminController {
      * @Date 2020/5/20 21:55
      * @Param [userName, password]
      */
-<<<<<<< HEAD
-    @RequestMapping("login")
-    public JSONObject login(HttpSession session,String a_no, String a_password) {
-        Admin admin = adminService.queryByName(a_no);
-=======
     @PostMapping("login")
     public JSONObject login(HttpSession session, String a_name, String a_password) {
         Admin admin = adminService.queryByName(a_name);
->>>>>>> dev
         JSONObject response = new JSONObject();
         if (admin == null) {
             response.put("flag", 0);
             response.put("msg", "账号不存在");
-<<<<<<< HEAD
-            System.out.println(1);
-=======
->>>>>>> dev
         } else {
             if (Md5Util.md5(a_password).equals(admin.getA_password())) {
                 admin.setA_password(null);
                 response.put("flag", 1);
                 response.put("msg", "密码正确");
                 response.put("user", admin);
-<<<<<<< HEAD
-                session.setAttribute("adminName",admin.getA_name());
-=======
                 session.setAttribute("adminName", admin.getA_name());
->>>>>>> dev
             } else {
                 response.put("flag", 0);
                 response.put("msg", "密码错误");
@@ -260,11 +199,6 @@ public class AdminController {
      * @Date 2020/5/20 22:32
      */
     @GetMapping("list")
-<<<<<<< HEAD
-    public JSONObject userList() {
-        List<User> list = userService.queryAll();
-        List<User.UserToApp> resList = new ArrayList<>();
-=======
     public JSONObject userList(HttpSession session,String u_name) {
         List<User> list;
         // 全部用户
@@ -274,7 +208,6 @@ public class AdminController {
             list = userService.queryALLBySearch(u_name);
         }
         List<User.UserToWeb> resList = new ArrayList<>();
->>>>>>> dev
         for (User user : list) {
             user.setU_password(null);
             resList.add(user.toUserToWeb(user));
@@ -290,16 +223,6 @@ public class AdminController {
      * @author maple
      * @Date 2020/5/20 22:32
      */
-<<<<<<< HEAD
-    @GetMapping("add")
-    public JSONObject addUser(String u_name, String u_email, String u_password, String u_type) {
-        JSONObject response = new JSONObject();
-        if (userService.queryByEmail(u_email) == null) {
-            User user = new User(0, u_email, u_name, u_password, u_type, new Date());
-            userService.insert(user);
-            response.put("flag", 1);
-            response.put("msg", "添加成功");
-=======
     @PostMapping("add")
     public JSONObject addUser(HttpSession session, String u_name, String u_email, String u_password, String u_type) {
         JSONObject response = new JSONObject();
@@ -327,15 +250,10 @@ public class AdminController {
                 response.put("flag", 0);
                 response.put("msg", "错误的u_type");
             }
->>>>>>> dev
         } else {
             response.put("flag", 0);
             response.put("msg", "邮箱号已存在");
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> dev
         return response;
     }
 
@@ -345,21 +263,6 @@ public class AdminController {
      * @author maple
      * @Date 2020/5/20 22:32
      */
-<<<<<<< HEAD
-    @GetMapping("edit")
-    public JSONObject editUser(String u_name, String u_email, String u_type) {
-        JSONObject response = new JSONObject();
-        if (userService.queryByEmail(u_email) == null) {
-            User user = new User(0, u_email, u_name, "密码", u_type, new Date());
-            userService.insert(user);
-            response.put("flag", 1);
-            response.put("msg", "添加成功");
-        } else {
-            response.put("flag", 0);
-            response.put("msg", "用户已存在");
-        }
-
-=======
     @PostMapping("edit")
     public JSONObject editUser(HttpSession session, String u_id, String u_name, String u_email) {
         JSONObject response = new JSONObject();
@@ -385,7 +288,6 @@ public class AdminController {
             diaryService.insert(new Diary(0, adminName, "修改用户", new Date(), 0));
             System.out.println("修改时给定id不正确");
         }
->>>>>>> dev
         return response;
     }
 
@@ -396,18 +298,6 @@ public class AdminController {
      * @Date 2020/5/20 22:32
      */
     @GetMapping("delete")
-<<<<<<< HEAD
-    public JSONObject deleteUser(String u_name, String u_email, String u_type) {
-        JSONObject response = new JSONObject();
-        User user = userService.queryByEmail(u_email);
-        if (user != null) {
-            userService.deleteById(user.getU_id());
-            response.put("flag", 1);
-            response.put("msg", "删除成功");
-        } else {
-            response.put("flag", 0);
-            response.put("msg", "用户不存在");
-=======
     public JSONObject deleteUser(HttpSession session, String u_id) {
         JSONObject response = new JSONObject();
         try {
@@ -427,17 +317,12 @@ public class AdminController {
             e.printStackTrace();
             response.put("flag", 0);
             response.put("msg", "程序遇到异常");
->>>>>>> dev
         }
         return response;
     }
 
     /**
-<<<<<<< HEAD
-     * 查看日志  有点问题
-=======
      * 查看日志
->>>>>>> dev
      *
      * @author maple
      * @Date 2020/5/20 22:32
@@ -447,14 +332,8 @@ public class AdminController {
         JSONObject response = new JSONObject();
         List<Diary> diaries = diaryService.queryAll();
         List<Diary.DiaryToWeb> resDiaries = new ArrayList<>();
-<<<<<<< HEAD
-        for(Diary diary : diaries) {
-            resDiaries.add(diary.toDiaryToWeb(diary));
-            System.out.println(diary.toDiaryToWeb(diary));
-=======
         for (Diary diary : diaries) {
             resDiaries.add(diary.toDiaryToWeb(diary));
->>>>>>> dev
         }
         response.put("diaries", resDiaries);
         return response;

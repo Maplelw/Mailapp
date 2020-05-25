@@ -1,9 +1,11 @@
 package com.skpl.mailapp.config;
 
 import com.alibaba.fastjson.JSONObject;
+import com.skpl.mailapp.entity.Admin;
 import com.skpl.mailapp.entity.User;
 import com.skpl.mailapp.service.UserService;
 import com.skpl.mailapp.util.SpringUtil;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -47,7 +49,6 @@ public class UserInterceptor implements HandlerInterceptor {
         }
         if(!flag) {
             System.out.println("请求被拦截");
-            System.out.println("用户未登录");
             JSONObject res = new JSONObject();
             res.put("status","error");
             res.put("error","您没有登录");

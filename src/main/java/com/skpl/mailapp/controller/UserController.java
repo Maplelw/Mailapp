@@ -2,18 +2,6 @@ package com.skpl.mailapp.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.skpl.mailapp.entity.Mail;
-import com.skpl.mailapp.entity.User;
-import com.skpl.mailapp.service.MailService;
-import com.skpl.mailapp.service.UserService;
-import com.skpl.mailapp.util.Md5Util;
-
-import org.springframework.web.bind.annotation.*;
-import sun.security.provider.MD5;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.sound.midi.Soundbank;
 import com.skpl.mailapp.entity.Filter;
 import com.skpl.mailapp.entity.Mail;
 import com.skpl.mailapp.entity.User;
@@ -123,19 +111,11 @@ public class UserController {
      * @Param [userName, userMail, userPassword]
      **/
     @PostMapping("user/add")
-<<<<<<< HEAD
-    public JSONObject insert(@RequestBody Map map ) {
-        init();
-        String userName =(String) map.get("userName");
-        String userMail =(String) map.get("userMail");
-        String userPassword =(String) map.get("userPassword");
-=======
     public JSONObject insert(@RequestBody Map map) {
         init();
         String userName = (String) map.get("userName");
         String userMail = (String) map.get("userMail");
         String userPassword = (String) map.get("userPassword");
->>>>>>> dev
         User user = new User(0, userMail, userName, Md5Util.md5(userPassword), "user", new Date());
         if (userService.queryByEmail(userMail) != null) {
             res.put("status", "error");
@@ -158,11 +138,7 @@ public class UserController {
      */
     @DeleteMapping("user")
     public JSONObject deleteById(@RequestBody Map map) {
-<<<<<<< HEAD
-        Integer userId = Integer.parseInt((String)map.get("userId"));
-=======
         Integer userId = Integer.parseInt((String) map.get("userId"));
->>>>>>> dev
         System.out.println(userId);
         init();
         if (userService.queryById(userId) != null) {
@@ -192,13 +168,8 @@ public class UserController {
         String newPassword = (String) map.get("UserPassword");
         String oldPassword = (String) map.get("UserOldPassword");
         String userMail = new String(Base64.getDecoder().decode(request.getHeader("jwt").getBytes()));
-<<<<<<< HEAD
-        User user =  userService.queryByEmail(userMail);
-        if(user == null) {
-=======
         User user = userService.queryByEmail(userMail);
         if (user == null) {
->>>>>>> dev
             res.put("status", "error");
             res.put("error", "用户不存在");
         } else {
@@ -214,28 +185,11 @@ public class UserController {
         return res;
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> dev
     /**
      * 查看邮件过滤列表
      *
      * @return 是否成功
      */
-<<<<<<< HEAD
-    @GetMapping("fliter")
-    public JSONObject getFilter() {
-        init();
-        JSONObject list = new JSONObject();
-        JSONObject data = new JSONObject();
-        list.put("filterMail","qaq@skpl.com");
-        list.put("fliterId","001");
-        list.put("fliterIp","125.246.223.332");
-        data.put("list",list);
-        res.put("status","success");
-        res.put("data",data);
-=======
     @GetMapping("filter")
     public JSONObject getFilter(HttpServletRequest request) {
         init();
@@ -248,7 +202,6 @@ public class UserController {
         data.put("list", filterToApps);
         res.put("status", "success");
         res.put("data", data);
->>>>>>> dev
         return res;
     }
 
@@ -257,17 +210,6 @@ public class UserController {
      *
      * @return 是否成功
      */
-<<<<<<< HEAD
-    @PostMapping("fliter")
-    public JSONObject addFilter() {
-        init();
-        JSONObject filterId = new JSONObject();
-        JSONObject data = new JSONObject();
-        filterId.put("fliterID","001");
-        data.put("filterId",filterId);
-        res.put("status","success");
-        res.put("data",data);
-=======
     @PostMapping("filter")
     public JSONObject addFilter(HttpServletRequest request, @RequestBody Map map) {
         init();
@@ -297,7 +239,6 @@ public class UserController {
             }
 
         }
->>>>>>> dev
         return res;
     }
 
@@ -306,14 +247,6 @@ public class UserController {
      *
      * @return 是否成功
      */
-<<<<<<< HEAD
-    @DeleteMapping("fliter")
-    public JSONObject deleteFilter(@RequestBody Map map) {
-        init();
-        //Integer filterId = Integer.parseInt((String) map.get("fliterId"));
-        System.out.println(map.get("fliterId"));
-        res.put("status","success");
-=======
     @DeleteMapping("filter")
     public JSONObject deleteFilter(HttpServletRequest request, @RequestBody Map map) {
         init();
@@ -339,7 +272,6 @@ public class UserController {
             res.put("status", "error");
             res.put("error", "过滤Id错误");
         }
->>>>>>> dev
         return res;
     }
 

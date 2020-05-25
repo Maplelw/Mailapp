@@ -28,8 +28,6 @@ public interface UserService {
     User queryByEmail(String uEmail);
 
     /**
-<<<<<<< HEAD
-=======
      * 模糊搜索，根据邮箱号或者用户名
      *
      * @param u_name 邮箱号
@@ -38,7 +36,6 @@ public interface UserService {
     List<User> queryALLBySearch(String u_name);
 
     /**
->>>>>>> dev
      * 查询多条数据
      *
      * @param offset 查询起始位置

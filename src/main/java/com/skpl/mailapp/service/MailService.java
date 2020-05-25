@@ -36,8 +36,6 @@ public interface MailService {
     List<Mail> queryAll();
 
     /**
-<<<<<<< HEAD
-=======
      * 查询所有数据
      *
      * @return 对象列表
@@ -53,7 +51,6 @@ public interface MailService {
     List<Mail> queryAllExFilter(String userMail);
 
     /**
->>>>>>> dev
      * 新增数据
      *
      * @param mail 实例对象

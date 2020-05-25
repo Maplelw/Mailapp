@@ -14,12 +14,6 @@
 
     <!--查询单个-->
     <select id="queryById" resultMap="MailMap">
-<<<<<<< HEAD
-        select
-          m_id, m_from, m_to, m_subject, m_content, m_time, m_flag
-        from Mailapp.mail
-        where m_id = #{m_id}
-=======
         SELECT m_id,
                m_from,
                m_to,
@@ -29,17 +23,10 @@
                m_flag
         FROM Mailapp.mail
         WHERE m_id = #{m_id}
->>>>>>> dev
     </select>
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="MailMap">
-<<<<<<< HEAD
-        select
-          m_id, m_from, m_to, m_subject, m_content, m_time, m_flag
-        from Mailapp.mail
-        limit #{offset}, #{limit}
-=======
         SELECT m_id,
                m_from,
                m_to,
@@ -49,16 +36,10 @@
                m_flag
         FROM Mailapp.mail
         LIMIT #{offset}, #{limit}
->>>>>>> dev
     </select>
 
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="MailMap">
-<<<<<<< HEAD
-        select
-          m_id, m_from, m_to, m_subject, m_content, m_time, m_flag
-        from Mailapp.mail
-=======
         SELECT m_id,
                m_from,
                m_to,
@@ -81,18 +62,12 @@
         FROM Mailapp.mail
         WHERE (m_from = #{userMail} OR m_to = #{userMail})
           AND m_from NOT IN (SELECT f_refuse_mail FROM filter WHERE f_mail = #{userMail}) ORDER BY m_time DESC
->>>>>>> dev
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="m_id" useGeneratedKeys="true">
-<<<<<<< HEAD
-        insert into Mailapp.mail(m_id, m_from, m_to, m_subject, m_content, m_time, m_flag)
-        values (#{m_id}, #{m_from}, #{m_to}, #{m_subject}, #{m_content}, #{m_time}, #{m_flag})
-=======
         INSERT INTO Mailapp.mail(m_id, m_from, m_to, m_subject, m_content, m_time, m_flag)
         VALUES (#{m_id}, #{m_from}, #{m_to}, #{m_subject}, #{m_content}, #{m_time}, #{m_flag})
->>>>>>> dev
     </insert>
 
     <!--通过主键修改数据-->
@@ -100,11 +75,7 @@
         update Mailapp.mail
         <set>
             <if test="m_from != null and m_from != ''">
-<<<<<<< HEAD
-                m_from = #{mFrom},
-=======
                 m_from = #{m_from},
->>>>>>> dev
             </if>
             <if test="m_to != null and m_to != ''">
                 m_to = #{m_to},
@@ -127,25 +98,17 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-<<<<<<< HEAD
-        delete from Mailapp.mail where m_id = #{m_id}
-=======
         DELETE
         FROM Mailapp.mail
         WHERE m_id = #{m_id}
->>>>>>> dev
     </delete>
 
     <!--通过邮箱号删除-->
     <delete id="deleteByMailId">
-<<<<<<< HEAD
-        delete from Mailapp.mail where m_from = #{mailID} or m_to = #{mailID}
-=======
         DELETE
         FROM Mailapp.mail
         WHERE m_from = #{mailID}
            OR m_to = #{mailID}
->>>>>>> dev
     </delete>
 
 </mapper>

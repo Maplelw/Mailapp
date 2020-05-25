@@ -29,20 +29,12 @@ public class MailServiceImpl implements MailService {
     public Mail queryById(Integer mId) {
         return this.mailDao.queryById(mId);
     }
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> dev
     /**
      * 查询多条数据
      *
      * @param offset 查询起始位置
-<<<<<<< HEAD
-     * @param limit 查询条数
-=======
      * @param limit  查询条数
->>>>>>> dev
      * @return 对象列表
      */
     @Override
@@ -61,8 +53,6 @@ public class MailServiceImpl implements MailService {
     }
 
     /**
-<<<<<<< HEAD
-=======
      * 查询所有数据
      *
      * @return 对象列表
@@ -84,7 +74,6 @@ public class MailServiceImpl implements MailService {
     }
 
     /**
->>>>>>> dev
      * 新增数据
      *
      * @param mail 实例对象
