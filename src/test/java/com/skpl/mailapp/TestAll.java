@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ExampleTest.class, AdminDaoTest.class})
+@Suite.SuiteClasses({AdminDaoTest.class})
 public class TestAll {
 
 }

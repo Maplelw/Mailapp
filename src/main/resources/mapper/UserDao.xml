@@ -13,39 +13,67 @@
 
     <!--根据编号查询单个-->
     <select id="queryById" resultMap="UserMap">
-        select
-          u_id, u_email, u_name, u_password, u_type, u_time
-        from Mailapp.user
-        where u_id = #{u_id}
+        SELECT u_id,
+               u_email,
+               u_name,
+               u_password,
+               u_type,
+               u_time
+        FROM Mailapp.user
+        WHERE u_id = #{u_id}
     </select>
 
     <!--根据邮箱号查询单个-->
     <select id="queryByEmail" resultMap="UserMap">
-        select
-            u_id, u_email, u_name, u_password, u_type, u_time
-        from Mailapp.user
-        where u_email = #{u_email}
+        SELECT u_id,
+               u_email,
+               u_name,
+               u_password,
+               u_type,
+               u_time
+        FROM Mailapp.user
+        WHERE u_email = #{u_email}
+    </select>
+
+    <select id="queryALLBySearch" resultMap="UserMap">
+        SELECT u_id,
+               u_email,
+               u_name,
+               u_password,
+               u_type,
+               u_time
+        FROM Mailapp.user
+        WHERE u_email LIKE CONCAT('%',#{u_name},'%')
+           OR u_name LIKE CONCAT('%',#{u_name},'%')
     </select>
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="UserMap">
-        select
-          u_id, u_email, u_name, u_password, u_type, u_time
-        from Mailapp.user
-        limit #{offset}, #{limit}
+        SELECT u_id,
+               u_email,
+               u_name,
+               u_password,
+               u_type,
+               u_time
+        FROM Mailapp.user
+        LIMIT #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="UserMap">
-        select
-          u_id, u_email, u_name, u_password, u_type, u_time
-        from Mailapp.user
+        SELECT u_id,
+               u_email,
+               u_name,
+               u_password,
+               u_type,
+               u_time
+        FROM Mailapp.user
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="u_id" useGeneratedKeys="true">
-        insert into Mailapp.user(u_email, u_name, u_password, u_type, u_time)
-        values (#{u_email}, #{u_name}, #{u_password}, #{u_type}, #{u_time})
+        INSERT INTO Mailapp.user(u_email, u_name, u_password, u_type, u_time)
+        VALUES (#{u_email}, #{u_name}, #{u_password}, #{u_type}, #{u_time})
     </insert>
 
     <!--通过主键修改数据-->
@@ -73,7 +101,9 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from Mailapp.user where u_id = #{u_id}
+        DELETE
+        FROM Mailapp.user
+        WHERE u_id = #{u_id}
     </delete>
 
 </mapper>

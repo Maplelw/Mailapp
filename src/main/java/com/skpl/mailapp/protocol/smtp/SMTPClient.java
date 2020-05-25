@@ -176,8 +176,6 @@ public class SMTPClient {
             return false;
         }
         //发送密码
-        //EBQKCKORKNUDKVYF
-        //LWVRFAFKZCZWVEBC
         result = sendCommand(Base64.getEncoder().encode(userPassword.getBytes()) + lineFeet);
         System.out.println(result);
         if (!isStartWith(result, "235")) {

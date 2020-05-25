@@ -36,7 +36,7 @@
     <!--新增所有列-->
     <insert id="insert" keyProperty="d_id" useGeneratedKeys="true">
         insert into Mailapp.diary(d_id, d_executor, d_execution, d_time, d_state)
-        values (#{d_id}, #{d_executor}, #{d_execution}, #{d_time}, #{d_tate})
+        values (#{d_id}, #{d_executor}, #{d_execution}, #{d_time}, #{d_state})
     </insert>
 
     <!--通过主键修改数据-->

@@ -43,8 +43,8 @@ public class UserInterceptor implements HandlerInterceptor {
         }
         // 可能是管理员请求
         HttpSession session = request.getSession();
-        System.out.println(session.getAttribute("adminName"));
         if(session.getAttribute("adminName") != null) {
+            System.out.println(session.getAttribute("adminName"));
             flag = true;
         }
         if(!flag) {

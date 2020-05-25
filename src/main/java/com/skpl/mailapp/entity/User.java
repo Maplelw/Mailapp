@@ -56,7 +56,7 @@ public class User implements Serializable {
     public UserToWeb toUserToWeb(User user) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String resTime = format.format(user.getU_time());
-        return new UserToWeb(user.getU_id(), user.getU_name(), resTime, user.getU_password(), user.getU_type(), resTime);
+        return new UserToWeb(user.getU_id(), user.getU_email(), user.getU_name(), user.getU_password(), user.getU_type(), resTime);
     }
 
     @Data
@@ -68,7 +68,7 @@ public class User implements Serializable {
         private String u_name;
         private String u_password;
         private String u_type;
-        private String u_time;
+        private String time;
     }
 
     public class UserToApp {

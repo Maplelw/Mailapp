@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ExampleTest.class})
 
 class MailappApplicationTests {
 

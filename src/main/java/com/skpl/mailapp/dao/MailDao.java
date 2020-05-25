@@ -49,6 +49,14 @@ public interface MailDao {
     List<Mail> queryAll(Mail mail);
 
     /**
+     * 获取用户所有邮件，包括收件和发件，除去过滤器的
+     *
+     * @param userMail 实例对象
+     * @return 对象列表
+     */
+    List<Mail> queryAllExFilter(String userMail);
+
+    /**
      * 新增数据
      *
      * @param mail 实例对象

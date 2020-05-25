@@ -2,9 +2,39 @@ package com.skpl.mailapp.protocol.smtp;
 
 
 import com.skpl.mailapp.protocol.smtp.context.SmtpContext;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
 import java.net.ServerSocket;
+
+class SmtpThread extends Thread {
+
+    private ServerSocket serverSocket;
+
+    private int port;
+
+    public SmtpThread(ServerSocket socket, int port) {
+        this.serverSocket = socket;
+        this.port = port;
+    }
+
+    @SneakyThrows
+    @Override
+    public void run() {
+        while (true) {
+            // 等待连接服务器
+            try {
+                if (!serverSocket.isClosed() && serverSocket != null) {
+                    new SmtpContext(serverSocket.accept()).start();
+                } else {
+                    break;
+                }
+            } catch (Exception e) {
+                System.out.println("smtp服务已经关闭");
+            }
+        }
+    }
+}
 
 @Component
 public class SMTPServer {
@@ -17,19 +47,9 @@ public class SMTPServer {
         try {
             if (serverSocket == null || serverSocket.isClosed()) {
                 serverSocket = new ServerSocket(port);
+                SmtpThread thread = new SmtpThread(serverSocket, port);
+                thread.start();
                 System.out.println("smtp服务开启成功");
-                while (true) {
-                    // 等待连接服务器
-                    try {
-                        if (!serverSocket.isClosed() && serverSocket != null ) {
-                            new SmtpContext(serverSocket.accept()).start();
-                        } else {
-                            break;
-                        }
-                    } catch (Exception e) {
-                        System.out.println("smtp服务已经关闭");
-                    }
-                }
             } else {
                 System.out.println("smtp服务已经开启");
             }

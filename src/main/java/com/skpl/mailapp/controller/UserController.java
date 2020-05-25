@@ -9,14 +9,10 @@ import com.skpl.mailapp.service.FilterService;
 import com.skpl.mailapp.service.MailService;
 import com.skpl.mailapp.service.UserService;
 import com.skpl.mailapp.util.Md5Util;
-
 import org.springframework.web.bind.annotation.*;
-import sun.security.provider.MD5;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.sound.midi.Soundbank;
 import java.util.*;
 
 /**
@@ -189,7 +185,6 @@ public class UserController {
         return res;
     }
 
-
     /**
      * 查看邮件过滤列表
      *
@@ -226,12 +221,23 @@ public class UserController {
             res.put("status", "error");
             res.put("error", "过滤邮箱不存在");
         } else {
-            filterService.insert(new Filter(0, userMail, filterMail, filterIp));
-            res.put("status", "success");
-            res.put("data", data);
-            Filter filter = new Filter(null, userMail, filterMail, null);
-            List<Filter> filters = filterService.queryAllByLimit(0, 1, filter);
-            data.put("filterId", filters.get(0).getFId());
+            List<Filter> filters = filterService.queryByMail(userMail);
+            HashSet<Object> set = new HashSet<>();
+            for (Filter filter : filters) {
+                set.add(filter.getFRefuseMail());
+            }
+            if (set.contains(filterMail)) {
+                res.put("status", "error");
+                res.put("error", "已经过滤该邮箱");
+            } else {
+                filterService.insert(new Filter(0, userMail, filterMail, filterIp));
+                res.put("status", "success");
+                res.put("data", data);
+                Filter filter = new Filter(null, userMail, filterMail, null);
+                List<Filter> resFilters = filterService.queryAllByLimit(0, 1, filter);
+                data.put("filterId", resFilters.get(0).getFId());
+            }
+
         }
         return res;
     }
@@ -242,18 +248,27 @@ public class UserController {
      * @return 是否成功
      */
     @DeleteMapping("filter")
-    public JSONObject deleteFilter(@RequestBody Map map) {
+    public JSONObject deleteFilter(HttpServletRequest request, @RequestBody Map map) {
         init();
         try {
-            Integer filterId = (Integer) Integer.parseInt((String) map.get("filterId"));
-            if (filterService.queryById(filterId) != null) {
-                filterService.deleteById(filterId);
-                res.put("status", "success");
+            Integer filterId = Integer.parseInt((String) map.get("filterId"));
+            System.out.println(filterId);
+            String userMail = new String(Base64.getDecoder().decode(request.getHeader("jwt").getBytes()));
+            Filter filter = filterService.queryById(filterId);
+            if (filter != null) {
+                if (filter.getFMail().equals(userMail)) {
+                    filterService.deleteById(filterId);
+                    res.put("status", "success");
+                } else {
+                    res.put("status", "error");
+                    res.put("error", "无法删除不属于您的过滤id");
+                }
             } else {
                 res.put("status", "error");
                 res.put("error", "过滤Id不存在");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             res.put("status", "error");
             res.put("error", "过滤Id错误");
         }

@@ -33,6 +33,14 @@ public interface UserDao {
     User queryByEmail(String uEmail);
 
     /**
+     * 模糊搜索，根据邮箱号或者用户名
+     *
+     * @param u_name 邮箱号
+     * @return 实例对象
+     */
+    List<User> queryALLBySearch(String u_name);
+
+    /**
      * 查询指定行数据
      *
      * @param offset 查询起始位置

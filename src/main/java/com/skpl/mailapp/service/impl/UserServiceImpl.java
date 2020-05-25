@@ -1,5 +1,6 @@
 package com.skpl.mailapp.service.impl;
 
+import com.skpl.mailapp.entity.Mail;
 import com.skpl.mailapp.entity.User;
 import com.skpl.mailapp.dao.UserDao;
 import com.skpl.mailapp.service.UserService;
@@ -40,12 +41,12 @@ public class UserServiceImpl implements UserService {
     public User queryByEmail(String uEmail) {
         return this.userDao.queryByEmail(uEmail);
     }
-    
+
     /**
      * 查询多条数据
      *
      * @param offset 查询起始位置
-     * @param limit 查询条数
+     * @param limit  查询条数
      * @return 对象列表
      */
     @Override
@@ -62,6 +63,7 @@ public class UserServiceImpl implements UserService {
     public List<User> queryAll() {
         return this.userDao.queryAll();
     }
+
 
     /**
      * 新增数据
@@ -85,6 +87,18 @@ public class UserServiceImpl implements UserService {
     public User update(User user) {
         this.userDao.update(user);
         return this.queryById(user.getU_id());
+    }
+
+    /**
+     * 模糊搜索，根据邮箱号或者用户名
+     *
+     * @param u_name 邮箱号
+     * @return 实例对
+     *
+     */
+    @Override
+    public List<User> queryALLBySearch(String u_name) {
+        return this.userDao.queryALLBySearch(u_name);
     }
 
     /**

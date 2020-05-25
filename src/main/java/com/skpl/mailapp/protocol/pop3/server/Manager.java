@@ -1,6 +1,5 @@
 package com.skpl.mailapp.protocol.pop3.server;
 
-
 import com.skpl.mailapp.protocol.pop3.server.domain.User;
 import com.skpl.mailapp.service.UserService;
 import com.skpl.mailapp.util.SpringUtil;
