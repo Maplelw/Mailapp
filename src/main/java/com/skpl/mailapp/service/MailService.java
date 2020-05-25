@@ -36,6 +36,24 @@ public interface MailService {
     List<Mail> queryAll();
 
     /**
+<<<<<<< HEAD
+=======
+     * 查询所有数据
+     *
+     * @return 对象列表
+     */
+    List<Mail> queryAll(Mail mail);
+
+    /**
+     * 获取用户所有邮件，包括收件和发件，除去过滤器的
+     *
+     * @param userMail 实例对象
+     * @return 对象列表
+     */
+    List<Mail> queryAllExFilter(String userMail);
+
+    /**
+>>>>>>> dev
      * 新增数据
      *
      * @param mail 实例对象

@@ -1,5 +1,9 @@
 package com.skpl.mailapp.service.impl;
 
+<<<<<<< HEAD
+=======
+import com.skpl.mailapp.entity.Mail;
+>>>>>>> dev
 import com.skpl.mailapp.entity.User;
 import com.skpl.mailapp.dao.UserDao;
 import com.skpl.mailapp.service.UserService;
@@ -40,12 +44,20 @@ public class UserServiceImpl implements UserService {
     public User queryByEmail(String uEmail) {
         return this.userDao.queryByEmail(uEmail);
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> dev
     /**
      * 查询多条数据
      *
      * @param offset 查询起始位置
+<<<<<<< HEAD
      * @param limit 查询条数
+=======
+     * @param limit  查询条数
+>>>>>>> dev
      * @return 对象列表
      */
     @Override
@@ -63,6 +75,10 @@ public class UserServiceImpl implements UserService {
         return this.userDao.queryAll();
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
     /**
      * 新增数据
      *
@@ -88,6 +104,21 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * 模糊搜索，根据邮箱号或者用户名
+     *
+     * @param u_name 邮箱号
+     * @return 实例对
+     *
+     */
+    @Override
+    public List<User> queryALLBySearch(String u_name) {
+        return this.userDao.queryALLBySearch(u_name);
+    }
+
+    /**
+>>>>>>> dev
      * 通过主键删除数据
      *
      * @param uId 主键

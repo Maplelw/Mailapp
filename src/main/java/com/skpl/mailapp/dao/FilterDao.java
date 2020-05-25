@@ -1,94 +1,92 @@
 package com.skpl.mailapp.dao;
 
-import com.skpl.mailapp.entity.User;
+import com.skpl.mailapp.entity.Filter;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * 记录用户的信息(User)表数据库访问层
+ * (Filter)表数据库访问层
  *
  * @author makejava
- * @since 2020-05-07 17:52:59
+ * @since 2020-05-22 19:13:14
  */
 @Mapper
 @Repository
-public interface UserDao {
+public interface FilterDao {
 
     /**
      * 通过ID查询单条数据
      *
-     * @param uId 主键
+     * @param fId 主键
      * @return 实例对象
      */
-    User queryById(Integer uId);
+    Filter queryById(Integer fId);
 
     /**
-     * 通过ID查询单条数据
+     * 通过userMail查询
      *
-     * @param uEmail 邮箱号
+     * @param fMail 主键
      * @return 实例对象
      */
-    User queryByEmail(String uEmail);
-
+    List<Filter> queryByMail(String fMail);
+   
     /**
-<<<<<<< HEAD
-=======
-     * 模糊搜索，根据邮箱号或者用户名
-     *
-     * @param u_name 邮箱号
-     * @return 实例对象
-     */
-    List<User> queryALLBySearch(String u_name);
-
-    /**
->>>>>>> dev
      * 查询指定行数据
      *
      * @param offset 查询起始位置
      * @param limit 查询条数
      * @return 对象列表
      */
-    List<User> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+    List<Filter> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+
+    /**
+     * 查询指定行数据
+     *
+     * @param offset 查询起始位置
+     * @param limit 查询条数
+     * @return 对象列表
+     */
+    List<Filter> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit,Filter filter);
 
     /**
      * 返回所有数据
      *
      * @return 对象列表
      */
-    List<User> queryAll();
+    List<Filter> queryAll();
     
     /**
      * 通过实体作为筛选条件查询
      *
-     * @param user 实例对象
+     * @param filter 实例对象
      * @return 对象列表
      */
-    List<User> queryAll(User user);
+    List<Filter> queryAll(Filter filter);
 
     /**
      * 新增数据
      *
-     * @param user 实例对象
+     * @param filter 实例对象
      * @return 影响行数
      */
-    int insert(User user);
+    int insert(Filter filter);
 
     /**
      * 修改数据
      *
-     * @param user 实例对象
+     * @param filter 实例对象
      * @return 影响行数
      */
-    int update(User user);
+    int update(Filter filter);
 
     /**
      * 通过主键删除数据
      *
-     * @param uId 主键
+     * @param fId 主键
      * @return 影响行数
      */
-    int deleteById(Integer uId);
+    int deleteById(Integer fId);
 
 }

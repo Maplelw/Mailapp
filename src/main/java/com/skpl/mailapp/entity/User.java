@@ -5,6 +5,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sun.org.apache.xml.internal.dtm.ref.sax2dtm.SAX2DTM;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,10 +47,28 @@ public class User implements Serializable {
      */
     private Date u_time;
 
-    public UserToApp toUserToWeb(User user) {
+    public UserToApp toUserToApp(User user) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String resTime = format.format(user.getU_time());
         return new UserToApp(user.getU_id(), user.getU_name(), resTime, user.getU_password(), user.getU_type(), resTime);
+    }
+
+    public UserToWeb toUserToWeb(User user) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String resTime = format.format(user.getU_time());
+        return new UserToWeb(user.getU_id(), user.getU_email(), user.getU_name(), user.getU_password(), user.getU_type(), resTime);
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public class UserToWeb {
+        private Integer u_id;
+        private String u_email;
+        private String u_name;
+        private String u_password;
+        private String u_type;
+        private String time;
     }
 
     public class UserToApp {

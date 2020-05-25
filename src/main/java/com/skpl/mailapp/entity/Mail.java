@@ -3,6 +3,10 @@ package com.skpl.mailapp.entity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.io.Serializable;
+<<<<<<< HEAD
+=======
+import java.util.List;
+>>>>>>> dev
 import java.util.stream.DoubleStream;
 
 import com.sun.org.apache.regexp.internal.RE;
@@ -11,6 +15,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.print.DocFlavor;
+<<<<<<< HEAD
+=======
+import javax.xml.soap.Detail;
+>>>>>>> dev
 
 /**
  * (Mail)实体类
@@ -24,6 +32,7 @@ import javax.print.DocFlavor;
 public class Mail implements Serializable {
     private static final long serialVersionUID = 439991188578310455L;
     /**
+<<<<<<< HEAD
     * 邮件编号
             
     */
@@ -49,11 +58,38 @@ public class Mail implements Serializable {
     /**
     * 是否已读
     */
+=======
+     * 邮件编号
+     */
+    private Integer m_id;
+    /**
+     * email xxx@xxx.com
+     */
+    private String m_from;
+
+    private String m_to;
+    /**
+     * 邮件标题
+     */
+    private String m_subject;
+    /**
+     * 邮件正文
+     */
+    private String m_content;
+    /**
+     * 发邮件日期时间
+     */
+    private Date m_time;
+    /**
+     * 是否已读
+     */
+>>>>>>> dev
     private Integer m_flag;
 
     public MailToAPP toMailToAPP(Mail mail) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String resTime = format.format(mail.getM_time());
+<<<<<<< HEAD
         return new MailToAPP(mail.getM_id(),mail.m_from,mail.getM_to(),mail.getM_subject(),mail.getM_content(),resTime,mail.getM_flag());
     }
 
@@ -131,5 +167,40 @@ public class Mail implements Serializable {
         public void setM_flag(Integer m_flag) {
             this.m_flag = m_flag;
         }
+=======
+        boolean flag = false;
+        if(mail.m_flag == 1) {
+            flag = true;
+        }
+        return new MailToAPP(mail.m_id,null,null, new Detail(mail.m_subject, m_content),resTime,flag);
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public class MailToAPP {
+        private Integer mailId;
+        private Person sender;
+        private List<Person> receiver;
+        private Detail data;
+        private String time;
+        private Boolean isRead;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Person {
+        String name;
+        String mail;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Detail {
+        String title;
+        String content;
+>>>>>>> dev
     }
 }

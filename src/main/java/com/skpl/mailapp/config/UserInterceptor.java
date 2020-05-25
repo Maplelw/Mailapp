@@ -1,11 +1,9 @@
 package com.skpl.mailapp.config;
 
 import com.alibaba.fastjson.JSONObject;
-import com.skpl.mailapp.entity.Admin;
 import com.skpl.mailapp.entity.User;
 import com.skpl.mailapp.service.UserService;
 import com.skpl.mailapp.util.SpringUtil;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Base64;
+import java.util.Date;
 
 /**
  * @author maple
@@ -22,6 +21,7 @@ public class UserInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         boolean flag = false;
         response.setCharacterEncoding("utf-8");
+        request.setCharacterEncoding("utf-8");
         // 用户请求
         if(request.getHeader("jwt") != null) {
             String userMail;
@@ -31,6 +31,8 @@ public class UserInterceptor implements HandlerInterceptor {
                 UserService userService = (UserService) SpringUtil.getBean("userService");
                 User user = userService.queryByEmail(userMail);
                 if(user != null ) {
+                    user.setU_time(new Date());
+                    userService.update(user);
                     flag = true;
                 }
             } catch (Exception e) {
@@ -40,6 +42,7 @@ public class UserInterceptor implements HandlerInterceptor {
         // 可能是管理员请求
         HttpSession session = request.getSession();
         if(session.getAttribute("adminName") != null) {
+            System.out.println(session.getAttribute("adminName"));
             flag = true;
         }
         if(!flag) {

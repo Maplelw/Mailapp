@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skpl.mailapp.dao.FilterDao">
+
+    <resultMap type="com.skpl.mailapp.entity.Filter" id="FilterMap">
+        <result property="fId" column="f_id" jdbcType="INTEGER"/>
+        <result property="fMail" column="f_mail" jdbcType="VARCHAR"/>
+        <result property="fRefuseMail" column="f_refuse_mail" jdbcType="VARCHAR"/>
+        <result property="fIp" column="f_ip" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="FilterMap">
+        SELECT f_id,
+               f_mail,
+               f_refuse_mail,
+               f_ip
+        FROM Mailapp.filter
+        WHERE f_id = #{fId}
+    </select>
+
+    <!--根据mail查询-->
+    <select id="queryByMail" resultMap="FilterMap">
+        SELECT f_id,
+               f_mail,
+               f_refuse_mail,
+               f_ip
+        FROM Mailapp.filter
+        WHERE f_mail = #{fMail}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="FilterMap">
+        SELECT f_id,
+               f_mail,
+               f_refuse_mail,
+               f_ip
+        FROM Mailapp.filter
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="FilterMap">
+        select
+        f_id, f_mail, f_refuse_mail, f_ip
+        from Mailapp.filter
+        <where>
+            <if test="fMail != null and fMail != ''">
+                and f_mail = #{fMail}
+            </if>
+            <if test="fRefuseMail != null and fRefuseMail != ''">
+                and f_refuse_mail = #{fRefuseMail}
+            </if>
+            <if test="fIp != null and fIp != ''">
+                and f_ip = #{fIp}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="fId" useGeneratedKeys="true">
+        INSERT INTO Mailapp.filter(f_mail, f_refuse_mail, f_ip)
+        VALUES (#{fMail}, #{fRefuseMail}, #{fIp})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update Mailapp.filter
+        <set>
+            <if test="fMail != null and fMail != ''">
+                f_mail = #{fMail},
+            </if>
+            <if test="fRefuseMail != null and fRefuseMail != ''">
+                f_refuse_mail = #{fRefuseMail},
+            </if>
+            <if test="fIp != null and fIp != ''">
+                f_ip = #{fIp},
+            </if>
+        </set>
+        where f_id = #{fId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        DELETE
+        FROM Mailapp.filter
+        WHERE f_id = #{fId}
+    </delete>
+
+</mapper>

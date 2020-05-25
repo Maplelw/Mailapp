@@ -37,8 +37,17 @@ public class ReceivingDataState implements SMTPState {
                 String lastSegment = sb.substring(sb.length() - 3);
                 if (lastSegment.equals("\n.\n")) {
                     smtpContext.sendData("250 OK: Queued as " + new Random().nextInt(200));
+<<<<<<< HEAD
                     for (String item : smtpContext.getRecipient()){
                         Mail mail = new Mail(0,smtpContext.getMailFrom(),item,smtpContext.getSubject(),smtpContext.getTextBodyData().toString(),new Date(),0);
+=======
+                    Date date = new Date();
+                    String content = sb.substring(0,sb.length() - 3);
+                    System.out.println("=============");
+                    System.out.println(content);
+                    for (String item : smtpContext.getRecipient()){
+                        Mail mail = new Mail(0,smtpContext.getMailFrom(),item,smtpContext.getSubject(),content,date,0);
+>>>>>>> dev
                         mailService.insert(mail);
                     }
                     smtpContext.setCurrentState(new WaitForRcptToState(smtpContext));
