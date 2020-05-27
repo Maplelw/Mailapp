@@ -16,7 +16,7 @@ public class AuthLoginState implements SMTPState {
     @Override
     public void handle(String data) {
         if (data.toUpperCase().startsWith("AUTH LOGIN")) {
-            smtpContext.setHost(data.substring(5));
+            //smtpContext.setHost(data.substring(5));
             smtpContext.sendData("334 dXNlcm5hbWU6 ");
             //Set new state and Pas by Ref to WaitForMailFromState.
             smtpContext.setCurrentState(new CheckUserName(smtpContext));

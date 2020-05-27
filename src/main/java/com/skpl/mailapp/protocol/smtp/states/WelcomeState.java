@@ -12,13 +12,13 @@ public class WelcomeState implements SMTPState {
 
     public WelcomeState(SmtpContext smtpContext) {
         this.smtpContext = smtpContext;
-        smtpContext.sendData("220 Welcome to SMTP server!");
+        smtpContext.sendData("220 Welcome to skpl.com SMTP server!");
     }
 
     @Override
     public void handle(String data) {
         if (data.toUpperCase().startsWith("HELO")) {
-            smtpContext.setHost(data.substring(5));
+            //smtpContext.setHost(data.substring(5));
             smtpContext.sendData("250 Hello " + smtpContext.getHost() + ", I am glad to meet you");
             // 设置下一状态
             smtpContext.setCurrentState(new AuthLoginState(smtpContext));

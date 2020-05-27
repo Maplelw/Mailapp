@@ -13,14 +13,14 @@ import java.net.SocketTimeoutException;
 /**
  * push the message to the client by a thread
  */
-public class POP3Context implements Runnable{
+public class POP3Context implements Runnable {
 
     private Socket client = null;
     private BufferedReader br = null;
     private PrintWriter pw = null;
     private POP3ReceiveService pop3ReceiveService = null;
 
-    public POP3Context(Socket client){
+    public POP3Context(Socket client) {
         this.client = client;
     }
 
@@ -30,17 +30,17 @@ public class POP3Context implements Runnable{
 
     @Override
     public void run() {
-        try{
-            this.client.setSoTimeout(30*1000);
+        try {
+            this.client.setSoTimeout(30 * 1000);
             br = new BufferedReader(new InputStreamReader(client.getInputStream()));
             pw = new PrintWriter(client.getOutputStream());
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         //记录连接过的地址
-        System.out.println("Connection with the client "+this.client.getInetAddress().getHostAddress()+" created");
+        System.out.println("Connection with the client " + this.client.getInetAddress().getHostAddress() + " created");
 
         //1.welcome
         this.feedbackToClient("+OK Welcome to 1703 Mail POP3 Server");
@@ -48,31 +48,30 @@ public class POP3Context implements Runnable{
         //2.调用LoginState
         pop3ReceiveService = new POP3ReceiveService(new LoginState());
 
-        while(true){
-            try{
+        while (true) {
+            try {
                 String inputString = br.readLine();
-                this.pop3ReceiveService.handleInputCommand(this,inputString);
-                if(client == null){
+                // 处理每个命令
+                this.pop3ReceiveService.handleInputCommand(this, inputString);
+                if (client == null) {
                     break;
                 }
 
-            }catch (SocketTimeoutException ste){
+            } catch (SocketTimeoutException ste) {
                 System.out.println("Server Time Out ......");
                 break;
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 break;
             }
         }
-
         this.closeConnection();
     }
 
     /**
      * feedback to client about the command and flush
      */
-    public void feedbackToClient(String output){
+    public void feedbackToClient(String output) {
         this.pw.println(output);
         this.pw.flush();
     }
@@ -80,13 +79,12 @@ public class POP3Context implements Runnable{
     /**
      * close the connection
      */
-    public void closeConnection(){
-        try{
-            if(client != null){
+    public void closeConnection() {
+        try {
+            if (client != null) {
                 client.close();
             }
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         client = null;

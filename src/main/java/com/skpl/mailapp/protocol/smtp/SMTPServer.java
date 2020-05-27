@@ -1,6 +1,5 @@
 package com.skpl.mailapp.protocol.smtp;
 
-
 import com.skpl.mailapp.protocol.smtp.context.SmtpContext;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
